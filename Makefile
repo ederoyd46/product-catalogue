@@ -20,11 +20,11 @@ build:
 build_local: 
 	@cargo build --bin "local_*"
 
-run_local_graph: 
-	@cargo run --bin local_graph
-
 build_lambda: 
 	@cargo build --bin "lambda_*"
+
+run_local_graph: 
+	@cargo run --bin local_graphql
 
 test:
 	@cargo test
@@ -44,18 +44,22 @@ remove:
 
 release:
 ifeq ("$(UNAME_S)","Linux")
-	@cargo build --target=$(CROSS_TARGET) --release
+	@cargo build --target=$(CROSS_TARGET) --release --bin "lambda_*"
+# @cargo build --target=$(CROSS_TARGET) --release --bin "lambda_*" -Z unstable-options --out-dir ./deploy
 else
-	@CROSS_COMPILE=$(CROSS_COMPILE) cargo build --target=$(CROSS_TARGET) --release
+	@CROSS_COMPILE=$(CROSS_COMPILE) cargo build --target=$(CROSS_TARGET) --release --bin "lambda_*"
+# @CROSS_COMPILE=$(CROSS_COMPILE) cargo build --target=$(CROSS_TARGET) --release --bin "lambda_*" -Z unstable-options --out-dir ./deploy
 endif
 
-package.graphql: 
-	@mkdir -p deploy/graphql
-	@cp target/$(CROSS_TARGET)/release/graphql deploy/graphql/bootstrap
+package: 
+	@mkdir -p deploy
+	zip -uj9 deploy/graphql.zip target/$(CROSS_TARGET)/release/lambda_graphql && echo "@ lambda_graphql\n@=bootstrap" | zipnote -w deploy/graphql.zip
+	
 	# @upx -9 deploy/graphql/bootstrap
-	@zip -j -9 deploy/graphql.zip deploy/graphql/bootstrap
 
-package: package.graphql
+# package:
+# 	zip -j9 deploy/graphql.zip deploy/lambda_graphql
+# 	echo "@ lambda_graphql\n@=bootstrap" | zipnote -w deploy/graphql.zip
 
 release.package.deploy: release package deploy
 

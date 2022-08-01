@@ -33,7 +33,7 @@ async fn main() -> io::Result<()> {
             .wrap(Cors::permissive()) //If you want to use Apollo Studio you need this
             .wrap(middleware::Logger::default())
     })
-    // .workers(2)
+    .workers(2)
     .bind(("127.0.0.1", 8080))?
     .run()
     .await
