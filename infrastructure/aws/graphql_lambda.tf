@@ -10,8 +10,7 @@ module "graphql" {
   publish                           = true
   cloudwatch_logs_retention_in_days = 1
   create_package                    = false
-  local_existing_package            = "../../deploy/graphql.zip"
-  # hash_extra                        = filebase64sha256("../../deploy/lambda_graphql")
+  local_existing_package            = "../../deploy/lambda_graphql.zip"
   memory_size = 128
   timeout     = 3
 }
