@@ -53,9 +53,16 @@ endif
 
 package: 
 	@mkdir -p deploy
-	zip -uj9 deploy/graphql.zip target/$(CROSS_TARGET)/release/lambda_graphql && echo "@ lambda_graphql\n@=bootstrap" | zipnote -w deploy/graphql.zip
+	@LAMBDAS="$(shell cargo metadata --no-deps --format-version 1 | jq '.packages[].targets[]| select(.name | startswith("lambda")) | .name' | sed -e s/\"//g)" && \
+	for lambda in $$LAMBDAS ; do \
+		md5sum -c target/$(CROSS_TARGET)/release/$$lambda.md5; \
+		if [ $$? != 0 ]; then \
+			zip -j9 deploy/$$lambda.zip target/$(CROSS_TARGET)/release/$$lambda && echo "@ $$lambda\n@=bootstrap" | zipnote -w deploy/$$lambda.zip ; \
+			md5sum target/$(CROSS_TARGET)/release/$$lambda > target/$(CROSS_TARGET)/release/$$lambda.md5; \
+		fi \
+	done
 	
-	# @upx -9 deploy/graphql/bootstrap
+# upx -9 target/$(CROSS_TARGET)/release/$$lambda
 
 # package:
 # 	zip -j9 deploy/graphql.zip deploy/lambda_graphql

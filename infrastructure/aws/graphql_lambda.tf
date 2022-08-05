@@ -12,8 +12,8 @@ module "graphql" {
   create_package                    = false
   local_existing_package            = "../../deploy/graphql.zip"
   # hash_extra                        = filebase64sha256("../../deploy/lambda_graphql")
-  memory_size                       = 128
-  timeout                           = 3
+  memory_size = 128
+  timeout     = 3
 }
 
 resource "aws_lambda_function_url" "graphql" {
