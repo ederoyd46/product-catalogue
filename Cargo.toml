@@ -1,6 +1,6 @@
 [workspace]
 members = [
     "middleware/*",
-    # "libraries/*",
+    "libraries/*",
     # "services/*"
 ]
