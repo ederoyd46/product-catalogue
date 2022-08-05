@@ -45,13 +45,11 @@ remove:
 release:
 ifeq ("$(UNAME_S)","Linux")
 	@cargo build --target=$(CROSS_TARGET) --release --bin "lambda_*"
-# @cargo build --target=$(CROSS_TARGET) --release --bin "lambda_*" -Z unstable-options --out-dir ./deploy
 else
 	@CROSS_COMPILE=$(CROSS_COMPILE) cargo build --target=$(CROSS_TARGET) --release --bin "lambda_*"
-# @CROSS_COMPILE=$(CROSS_COMPILE) cargo build --target=$(CROSS_TARGET) --release --bin "lambda_*" -Z unstable-options --out-dir ./deploy
 endif
 
-package: 
+package:
 	@mkdir -p deploy
 	@LAMBDAS="$(shell cargo metadata --no-deps --format-version 1 | jq '.packages[].targets[]| select(.name | startswith("lambda")) | .name' | sed -e s/\"//g)" && \
 	for lambda in $$LAMBDAS ; do \
@@ -63,10 +61,6 @@ package:
 	done
 	
 # upx -9 target/$(CROSS_TARGET)/release/$$lambda
-
-# package:
-# 	zip -j9 deploy/graphql.zip deploy/lambda_graphql
-# 	echo "@ lambda_graphql\n@=bootstrap" | zipnote -w deploy/graphql.zip
 
 release.package.deploy: release package deploy
 
