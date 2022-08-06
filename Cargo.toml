@@ -2,5 +2,5 @@
 members = [
     "middleware/*",
     "libraries/*",
-    # "services/*"
+    "services/*"
 ]

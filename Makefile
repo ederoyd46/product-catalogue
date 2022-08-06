@@ -52,14 +52,20 @@ endif
 package:
 	@mkdir -p deploy
 	@LAMBDAS="$(shell cargo metadata --no-deps --format-version 1 | jq '.packages[].targets[]| select(.name | startswith("lambda")) | .name' | sed -e s/\"//g)" && \
+	TEMP_DIR="$(shell mktemp -d)" && \
 	for lambda in $$LAMBDAS ; do \
 		md5sum -c target/$(CROSS_TARGET)/release/$$lambda.md5; \
 		if [ $$? != 0 ]; then \
-			zip -j9 deploy/$$lambda.zip target/$(CROSS_TARGET)/release/$$lambda && echo "@ $$lambda\n@=bootstrap" | zipnote -w deploy/$$lambda.zip ; \
+			mkdir $$TEMP_DIR/$$lambda ; \
+			cp target/$(CROSS_TARGET)/release/$$lambda $$TEMP_DIR/$$lambda/bootstrap ; \
+			zip -j9 deploy/$$lambda.zip $$TEMP_DIR/$$lambda/bootstrap ; \
 			md5sum target/$(CROSS_TARGET)/release/$$lambda > target/$(CROSS_TARGET)/release/$$lambda.md5; \
 		fi \
-	done
+	done ; \
+	rm -rf $$TEMP_DIR
 	
+
+# zip -j9 deploy/$$lambda.zip target/$(CROSS_TARGET)/release/$$lambda && echo "@ $$lambda\n@=bootstrap" | zipnote -w deploy/$$lambda.zip ; \
 # upx -9 target/$(CROSS_TARGET)/release/$$lambda
 
 release.package.deploy: release package deploy

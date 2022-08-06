@@ -11,8 +11,22 @@ module "graphql" {
   cloudwatch_logs_retention_in_days = 1
   create_package                    = false
   local_existing_package            = "../../deploy/lambda_graphql.zip"
-  memory_size = 128
-  timeout     = 3
+  memory_size                       = 128
+  timeout                           = 3
+
+  # environment_variables = {
+  #   DATABASE = aws_dynamodb_table.data_store.name
+  # }
+
+  # attach_policy_statements = true
+  # policy_statements = {
+  #   service_config = {
+  #     effect    = "Allow",
+  #     actions   = ["dynamodb:GetItem"]
+  #     resources = [aws_dynamodb_table.data_store.arn]
+  #   },
+  # }
+
 }
 
 resource "aws_lambda_function_url" "graphql" {

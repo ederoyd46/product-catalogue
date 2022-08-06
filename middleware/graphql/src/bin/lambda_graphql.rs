@@ -16,7 +16,7 @@ async fn main() -> Result<(), Error> {
         lambda_handler(event, schema.clone())
     }))
     .await?;
-    log::info!("Shutting down");
+    log::info!("Shutting down now");
     Ok(())
 }
 
