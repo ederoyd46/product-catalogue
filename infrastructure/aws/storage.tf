@@ -1,6 +1,6 @@
 # Data Storage
 resource aws_dynamodb_table data_store {
-  name = "product-catalogue-${terraform.workspace}"
+  name = "${terraform.workspace}-product-catalogue"
   billing_mode = "PAY_PER_REQUEST"
   hash_key = "PK"
 

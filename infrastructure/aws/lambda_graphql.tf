@@ -13,9 +13,10 @@ module "graphql" {
   memory_size                       = 128
   timeout                           = 3
 
-  # environment_variables = {
-  #   DATABASE = aws_dynamodb_table.data_store.name
-  # }
+  environment_variables = {
+    STORE_PRODUCT_URL = aws_lambda_function_url.store_product.function_url
+    #   DATABASE = aws_dynamodb_table.data_store.name
+  }
 
   # attach_policy_statements = true
   # policy_statements = {
