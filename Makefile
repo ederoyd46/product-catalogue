@@ -54,10 +54,11 @@ package:
 	@LAMBDAS="$(shell cargo metadata --no-deps --format-version 1 | jq '.packages[].targets[]| select(.name | startswith("lambda")) | .name' | sed -e s/\"//g)" && \
 	TEMP_DIR="$(shell mktemp -d)" && \
 	for lambda in $$LAMBDAS ; do \
-		md5sum -c target/$(CROSS_TARGET)/release/$$lambda.md5; \
+		md5sum -c target/$(CROSS_TARGET)/release/$$lambda.md5 2> /dev/null; \
 		if [ $$? != 0 ]; then \
 			mkdir $$TEMP_DIR/$$lambda ; \
 			cp target/$(CROSS_TARGET)/release/$$lambda $$TEMP_DIR/$$lambda/bootstrap ; \
+			echo Packaging $$lambda ; \
 			zip -j9 deploy/$$lambda.zip $$TEMP_DIR/$$lambda/bootstrap ; \
 			md5sum target/$(CROSS_TARGET)/release/$$lambda > target/$(CROSS_TARGET)/release/$$lambda.md5; \
 		fi \
