@@ -1,9 +1,8 @@
-# Retrieve Lambda
 module "graphql" {
   source  = "terraform-aws-modules/lambda/aws"
   version = "3.3.1"
 
-  function_name                     = "graphql-${terraform.workspace}"
+  function_name                     = "${terraform.workspace}-graphql"
   description                       = "GraphQL"
   handler                           = "does.not.matter"
   runtime                           = "provided"
