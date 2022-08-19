@@ -2118,10 +2118,15 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 name = "store_product"
 version = "0.0.1"
 dependencies = [
+ "actix-cors",
+ "actix-web",
+ "actix-web-lab",
  "core",
  "env_logger",
  "lambda_http",
  "log",
+ "serde",
+ "serde_derive",
  "serde_json",
  "tokio",
 ]
