@@ -14,14 +14,14 @@ const PORT: u16 = 8081;
 #[route("/{id}", method = "POST")]
 async fn store_product(id: web::Path<String>, body: web::Json<Product>) -> impl Responder {
     let product = body.into_inner();
-    app(&product).await.unwrap();
+    let response = app(product.clone()).await.unwrap();
 
-    HttpResponse::Created().json(json!({
+    HttpResponse::Ok().json(json!({
         "id": id.to_owned(),
-        "body": product,
         "is_valid": product.is_valid(),
         "key": product.get_key(),
-        "meta_data": product.get_meta_data()
+        "meta_data": product.get_meta_data(),
+        "response": response
     }))
 }
 

@@ -13,7 +13,7 @@ pub fn extract_key_from_request(event: Request) -> String {
     }
 }
 
-pub async fn app<T: DataTransferObject + serde::Serialize>(dto: &T) -> Result<String, BoxError> {
+pub async fn app<T: DataTransferObject + serde::Serialize>(dto: T) -> Result<String, BoxError> {
     if !dto.is_valid() {
         error_and_panic!("Invalid input, please use a string");
     }
@@ -27,13 +27,13 @@ pub async fn app<T: DataTransferObject + serde::Serialize>(dto: &T) -> Result<St
     println!("{:?}", &dto.get_meta_data());
 
     let data = CustomValue {
-        key: dto.get_key(),
+        key: dto.get_key().to_string(),
         value,
     };
     store_handler(&config, data).await
 }
 
-pub async fn store_handler<T: Storable>(config: &Config, data: T) -> Result<String, BoxError> {
+async fn store_handler<T: Storable>(config: &Config, data: T) -> Result<String, BoxError> {
     if !data.is_valid() {
         error_and_panic!("No key specified");
     }
