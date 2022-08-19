@@ -1,3 +1,4 @@
 pub mod database;
-pub mod types;
 pub mod macros;
+pub mod model;
+pub mod types;

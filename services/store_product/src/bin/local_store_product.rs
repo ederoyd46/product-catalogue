@@ -1,17 +1,28 @@
-use serde_json::{json, Value};
-use std::io;
-
+use ::store_product::app;
 use actix_web::{
     middleware, route,
     web::{self},
     App, HttpResponse, HttpServer, Responder,
 };
+use core::model::product::Product;
+use core::model::DataTransferObject;
+use serde_json::json;
+use std::io;
 
 const PORT: u16 = 8081;
 
 #[route("/{id}", method = "POST")]
-async fn store_product(id: web::Path<String>, body: web::Json<Value>) -> impl Responder {
-    HttpResponse::Created().json(json!({ "id": id.to_owned(), "body": body }))
+async fn store_product(id: web::Path<String>, body: web::Json<Product>) -> impl Responder {
+    let product = body.into_inner();
+    app(&product).await.unwrap();
+
+    HttpResponse::Created().json(json!({
+        "id": id.to_owned(),
+        "body": product,
+        "is_valid": product.is_valid(),
+        "key": product.get_key(),
+        "meta_data": product.get_meta_data()
+    }))
 }
 
 #[tokio::main(flavor = "current_thread")]

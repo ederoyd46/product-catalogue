@@ -1,10 +1,10 @@
 use core::database::store_database_item;
 use core::error_and_panic;
-use core::types::{Config, Storable, ConfigBuilder, CustomValue};
-use std::env;
+use core::model::DataTransferObject;
+use core::types::{Config, ConfigBuilder, CustomValue, Storable};
 use lambda_http::{tower::BoxError, Request};
 use log::{error, info, LevelFilter, SetLoggerError};
-use serde_json::Value;
+use std::env;
 
 pub fn extract_key_from_request(event: Request) -> String {
     match event.uri().path().rsplit_once('/') {
@@ -13,13 +13,23 @@ pub fn extract_key_from_request(event: Request) -> String {
     }
 }
 
-pub async fn app(value: Value) -> Result<String, BoxError> {
+pub async fn app<T: DataTransferObject + serde::Serialize>(dto: &T) -> Result<String, BoxError> {
+    if !dto.is_valid() {
+        error_and_panic!("Invalid input, please use a string");
+    }
+
     let config = ConfigBuilder::new()
         .table_name(env::var("DATABASE").unwrap())
         .build()
         .await;
 
-    let data = CustomValue { key: "1".to_owned(), value };
+    let value = serde_json::value::to_value(&dto).unwrap();
+    println!("{:?}", &dto.get_meta_data());
+
+    let data = CustomValue {
+        key: dto.get_key(),
+        value,
+    };
     store_handler(&config, data).await
 }
 
