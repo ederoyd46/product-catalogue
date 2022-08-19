@@ -7,13 +7,15 @@ use core::types::{ConfigBuilder, CustomValue};
 
 use log::{error, info};
 
+use std::env;
+
 #[tokio::main]
 async fn main() -> Result<(), BoxError> {
     store_product::initialise_logger()?;
-    info!("Initialise Store Value");
+    info!("Initialise Store Product");
 
     let config = ConfigBuilder::new()
-        .table_name(store_product::get_table_name())
+        .table_name(env::var("DATABASE").unwrap())
         .build()
         .await;
 
