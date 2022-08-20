@@ -11,7 +11,10 @@ use std::io;
 
 const PORT: u16 = 8081;
 
-#[route("/{id}", method = "POST")]
+// #[route("/{id}", method = "POST")]
+// async fn store_product(body: web::Json<Product>) -> impl Responder {
+
+#[route("/", method = "POST")]
 async fn store_product(id: web::Path<String>, body: web::Json<Product>) -> impl Responder {
     let product = body.into_inner();
     let response = app(product.clone()).await.unwrap();

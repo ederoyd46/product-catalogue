@@ -11,6 +11,9 @@ pub use error::AppError;
 use aws_sdk_dynamodb::model::AttributeValue;
 use std::collections::HashMap;
 
+/// Alias for a type-erased error type.
+pub type ApplicationError = Box<dyn std::error::Error + Send + Sync>;
+
 pub trait Storable: Send + Sync {
     fn is_valid(&self) -> bool;
     fn get_pk(&self) -> AttributeValue;

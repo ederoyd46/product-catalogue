@@ -1,19 +1,11 @@
 use core::database::store_database_item;
 use core::error_and_panic;
 use core::model::DataTransferObject;
-use core::types::{Config, ConfigBuilder, CustomValue, Storable};
-use lambda_http::{tower::BoxError, Request};
+use core::types::{Config, ConfigBuilder, CustomValue, Storable, ApplicationError};
 use log::{error, info, LevelFilter, SetLoggerError};
 use std::env;
 
-pub fn extract_key_from_request(event: Request) -> String {
-    match event.uri().path().rsplit_once('/') {
-        Some((_prefix, path_name)) => path_name.to_string(),
-        None => error_and_panic!("Could not find Path from the environment"),
-    }
-}
-
-pub async fn app<T: DataTransferObject + serde::Serialize>(dto: T) -> Result<String, BoxError> {
+pub async fn app<T: DataTransferObject + serde::Serialize>(dto: T) -> Result<String, ApplicationError> {
     if !dto.is_valid() {
         error_and_panic!("Invalid input, please use a string");
     }
@@ -33,7 +25,7 @@ pub async fn app<T: DataTransferObject + serde::Serialize>(dto: T) -> Result<Str
     store_handler(&config, data).await
 }
 
-async fn store_handler<T: Storable>(config: &Config, data: T) -> Result<String, BoxError> {
+async fn store_handler<T: Storable>(config: &Config, data: T) -> Result<String, ApplicationError> {
     if !data.is_valid() {
         error_and_panic!("No key specified");
     }
