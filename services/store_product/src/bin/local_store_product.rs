@@ -12,15 +12,14 @@ use std::io;
 const PORT: u16 = 8081;
 
 // #[route("/{id}", method = "POST")]
-// async fn store_product(body: web::Json<Product>) -> impl Responder {
+// async fn store_product(id: web::Path<String>, body: web::Json<Product>) -> impl Responder {
 
 #[route("/", method = "POST")]
-async fn store_product(id: web::Path<String>, body: web::Json<Product>) -> impl Responder {
+async fn store_product(body: web::Json<Product>) -> impl Responder {
     let product = body.into_inner();
     let response = app(product.clone()).await.unwrap();
 
     HttpResponse::Ok().json(json!({
-        "id": id.to_owned(),
         "is_valid": product.is_valid(),
         "key": product.get_key(),
         "meta_data": product.get_meta_data(),
