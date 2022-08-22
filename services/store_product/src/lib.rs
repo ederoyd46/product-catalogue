@@ -19,7 +19,7 @@ pub async fn app<T: DataTransferObject + serde::Serialize>(
         .await;
 
     let value = serde_json::value::to_value(&dto).unwrap();
-    println!("{:?}", &dto.get_meta_data());
+    info!("{:?}", &dto.get_meta_data());
 
     let data = CustomValue {
         key: dto.get_key().to_string(),
