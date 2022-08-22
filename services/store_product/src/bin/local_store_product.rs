@@ -13,7 +13,8 @@ use std::io;
 
 #[route("/", method = "POST")]
 async fn store_product(body: web::Json<Product>) -> impl Responder {
-    web::Json(app(body.into_inner()).await.unwrap())
+    let response = app(body.into_inner()).await.unwrap();
+    web::Json(response)
 }
 
 #[tokio::main(flavor = "current_thread")]
