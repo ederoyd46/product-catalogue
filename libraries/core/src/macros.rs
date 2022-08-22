@@ -47,3 +47,21 @@ macro_rules! local_http {
         .await
     }};
 }
+#[macro_export]
+macro_rules! lambda_http_run {
+    ($Dto:ty, $function:expr) => {{
+        lambda_http::run(service_fn(move |event: Request| {
+            let body = match event.body() {
+                Body::Text(val) => val.as_ref(),
+                Body::Binary(val) => std::str::from_utf8(val).unwrap(),
+                Body::Empty => error_and_panic!("Invalid input, please use a string"),
+            };
+            let value: $Dto = match serde_json::from_str(body) {
+                Ok(item) => item,
+                Err(e) => error_and_panic!("Could not parse input to known type", e),
+            };
+
+            $function(value.clone())
+        })).await?;
+    }};
+}
