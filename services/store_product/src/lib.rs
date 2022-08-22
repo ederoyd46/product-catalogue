@@ -1,11 +1,14 @@
 use core::database::store_database_item;
 use core::error_and_panic;
 use core::model::DataTransferObject;
-use core::types::{Config, ConfigBuilder, CustomValue, Storable, ApplicationError};
+use core::types::{ApplicationError, Config, ConfigBuilder, CustomValue, Storable};
 use log::{error, info, LevelFilter, SetLoggerError};
+use serde_json::{json, Value};
 use std::env;
 
-pub async fn app<T: DataTransferObject + serde::Serialize>(dto: T) -> Result<String, ApplicationError> {
+pub async fn app<T: DataTransferObject + serde::Serialize>(
+    dto: T,
+) -> Result<Value, ApplicationError> {
     if !dto.is_valid() {
         error_and_panic!("Invalid input, please use a string");
     }
@@ -22,10 +25,11 @@ pub async fn app<T: DataTransferObject + serde::Serialize>(dto: T) -> Result<Str
         key: dto.get_key().to_string(),
         value,
     };
-    store_handler(&config, data).await
+    let response = store_handler(&config, data).await?;
+    Ok(json!(response))
 }
 
-async fn store_handler<T: Storable>(config: &Config, data: T) -> Result<String, ApplicationError> {
+async fn store_handler<T: Storable>(config: &Config, data: T) -> Result<T, ApplicationError> {
     if !data.is_valid() {
         error_and_panic!("No key specified");
     }
@@ -34,7 +38,7 @@ async fn store_handler<T: Storable>(config: &Config, data: T) -> Result<String, 
 
     info!("item: {:?}", item_from_dynamo);
 
-    Ok(format!("Stored, {}!", data.get_pk().as_s().unwrap()))
+    Ok(data)
 }
 
 pub fn initialise_logger() -> Result<(), SetLoggerError> {

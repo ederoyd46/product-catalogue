@@ -27,3 +27,23 @@ macro_rules! log_and_throw {
         return Err($error);
     }};
 }
+
+#[macro_export]
+macro_rules! local_http {
+    ($port:expr, $function:expr) => {{
+        env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
+
+        log::info!("starting HTTP server on port {}", $port);
+
+        // Start HTTP server
+        HttpServer::new(move || {
+            App::new()
+                .service($function)
+                .wrap(middleware::Logger::default())
+        })
+        .workers(1)
+        .bind(("127.0.0.1", $port))?
+        .run()
+        .await
+    }};
+}
