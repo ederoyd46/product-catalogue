@@ -40,11 +40,3 @@ async fn store_handler<T: Storable>(config: &Config, data: T) -> Result<T, Appli
 
     Ok(data)
 }
-
-pub fn initialise_logger() -> Result<(), SetLoggerError> {
-    env_logger::builder()
-        .filter(Some("lib::database"), LevelFilter::Debug)
-        .filter_level(LevelFilter::Info)
-        .init();
-    Ok(())
-}
