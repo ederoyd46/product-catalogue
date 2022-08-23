@@ -3,10 +3,10 @@ use core::error_and_panic;
 use core::model::DataTransferObject;
 use core::types::{ApplicationError, Config, ConfigBuilder, CustomValue, Storable};
 use log::{error, info};
+use once_cell::sync::OnceCell;
+use serde_json::value::to_value;
 use serde_json::{json, Value};
 use std::env;
-use serde_json::value::to_value;
-use once_cell::sync::OnceCell;
 
 static CONFIG: OnceCell<Config> = OnceCell::new();
 

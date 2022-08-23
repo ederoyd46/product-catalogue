@@ -1,7 +1,10 @@
 use juniper::FieldResult;
 use juniper::{EmptySubscription, RootNode};
+use log::info;
+use std::env;
 
 mod product;
+use core::model::product::Product as ProductModel;
 use product::{NewProduct, Product};
 
 pub struct QueryRoot;
@@ -22,7 +25,24 @@ pub struct MutationRoot;
 
 #[juniper::graphql_object]
 impl MutationRoot {
-    fn create_product(_new_product: NewProduct) -> FieldResult<Product> {
+    async fn create_product(new_product: NewProduct) -> FieldResult<Product> {
+        let store_product_url =
+            env::var("STORE_PRODUCT_URL").expect("STORE_PRODUCT_URL must be set");
+        let product = ProductModel {
+            key: "key".to_string(),
+            description: Some("test product".to_string()),
+            name: new_product.name,
+            price: 12.34,
+        };
+
+        let response = reqwest::Client::new()
+            .post(store_product_url)
+            .json(&product)
+            .send()
+            .await;
+
+        info!("Response {:?}", response);
+
         Ok(Product {
             id: "1234".to_owned(),
             name: "Cardboard Box".to_owned(),

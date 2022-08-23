@@ -2,7 +2,7 @@ use ::store_dto::app;
 use actix_web::{
     middleware, route,
     web::{self},
-    App, HttpServer, Responder,
+    App, HttpServer, Responder, HttpResponse,
 };
 use core::local_http;
 use core::model::inventory::Inventory;
@@ -11,7 +11,8 @@ use std::io;
 
 #[route("/", method = "POST")]
 async fn route(body: web::Json<Inventory>) -> impl Responder {
-    web::Json(app(body.into_inner()).await.unwrap())
+    let response_data = app(body.into_inner()).await.unwrap();
+    HttpResponse::Ok().json(response_data)
 }
 
 #[tokio::main(flavor = "current_thread")]

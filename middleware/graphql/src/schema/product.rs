@@ -30,5 +30,5 @@ pub struct NewPrice {
 pub struct NewProduct {
     pub name: String,
     pub description: Option<String>,
-    pub price: NewPrice,
+    pub price: Option<NewPrice>,
 }

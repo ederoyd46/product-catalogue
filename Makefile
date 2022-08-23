@@ -42,6 +42,10 @@ deploy:
 remove:
 	@$(TERRAFORM) destroy -auto-approve
 
+output:
+	@$(TERRAFORM) output
+
+
 release:
 ifeq ("$(UNAME_S)","Linux")
 	@cargo build --target=$(CROSS_TARGET) --release --bin "lambda_*"

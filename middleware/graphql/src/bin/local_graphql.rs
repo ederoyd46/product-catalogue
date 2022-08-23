@@ -11,8 +11,8 @@ use product_catalogue_graphql::schema::{create_schema, Schema};
 
 /// GraphQL endpoint
 #[route("/", method = "GET", method = "POST")]
-async fn graphql(st: web::Data<Schema>, data: web::Json<GraphQLRequest>) -> impl Responder {
-    let response_data = data.execute(&st, &()).await;
+async fn graphql(schema: web::Data<Schema>, data: web::Json<GraphQLRequest>) -> impl Responder {
+    let response_data = data.execute(&schema, &()).await;
     HttpResponse::Ok().json(response_data)
 }
 
