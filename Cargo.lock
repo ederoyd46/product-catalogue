@@ -2125,6 +2125,7 @@ dependencies = [
  "env_logger",
  "lambda_http",
  "log",
+ "once_cell",
  "serde",
  "serde_derive",
  "serde_json",

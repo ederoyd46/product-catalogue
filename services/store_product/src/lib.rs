@@ -2,9 +2,13 @@ use core::database::store_database_item;
 use core::error_and_panic;
 use core::model::DataTransferObject;
 use core::types::{ApplicationError, Config, ConfigBuilder, CustomValue, Storable};
-use log::{error, info, LevelFilter, SetLoggerError};
+use log::{error, info};
 use serde_json::{json, Value};
 use std::env;
+
+use once_cell::sync::OnceCell;
+
+static CONFIG: OnceCell<Config> = OnceCell::new();
 
 pub async fn app<T: DataTransferObject + serde::Serialize>(
     dto: T,
@@ -13,10 +17,17 @@ pub async fn app<T: DataTransferObject + serde::Serialize>(
         error_and_panic!("Invalid input, please use a string");
     }
 
-    let config = ConfigBuilder::new()
-        .table_name(env::var("DATABASE").unwrap())
-        .build()
-        .await;
+    let config = if let Some(config) = CONFIG.get() {
+        config
+    } else {
+        let config = ConfigBuilder::new()
+            .table_name(env::var("DATABASE").unwrap())
+            .build()
+            .await;
+        CONFIG.set(config).unwrap();
+        info!("Configuration loaded");
+        CONFIG.get().unwrap()
+    };
 
     let value = serde_json::value::to_value(&dto).unwrap();
     info!("{:?}", &dto.get_meta_data());
