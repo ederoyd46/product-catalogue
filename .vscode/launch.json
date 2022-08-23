@@ -1,0 +1,42 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug executable 'local_store_product'",
+      "cargo": {
+        "args": ["build", "--bin=local_store_product", "--package=store_dto"],
+        "filter": {
+          "name": "local_store_product",
+          "kind": "bin"
+        }
+      },
+      "env": {
+        "DATABASE": "default-product-catalogue"
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug executable 'local_store_inventory'",
+      "cargo": {
+        "args": ["build", "--bin=local_store_inventory", "--package=store_dto"],
+        "filter": {
+          "name": "local_store_inventory",
+          "kind": "bin"
+        }
+      },
+      "env": {
+        "DATABASE": "default-product-catalogue"
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}
