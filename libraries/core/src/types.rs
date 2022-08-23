@@ -17,6 +17,7 @@ pub type ApplicationError = Box<dyn std::error::Error + Send + Sync>;
 pub trait Storable: Send + Sync {
     fn is_valid(&self) -> bool;
     fn get_pk(&self) -> AttributeValue;
+    fn get_metadata(&self) -> AttributeValue;
     fn to_dynamo_db(&self) -> AttributeValue;
 }
 

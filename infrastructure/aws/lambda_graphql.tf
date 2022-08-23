@@ -14,19 +14,9 @@ module "graphql" {
   timeout                           = 3
 
   environment_variables = {
-    STORE_PRODUCT_URL = aws_lambda_function_url.store_product.function_url
-    #   DATABASE = aws_dynamodb_table.data_store.name
+    STORE_PRODUCT_URL   = aws_lambda_function_url.store_product.function_url
+    STORE_INVENTORY_URL = aws_lambda_function_url.store_inventory.function_url
   }
-
-  # attach_policy_statements = true
-  # policy_statements = {
-  #   service_config = {
-  #     effect    = "Allow",
-  #     actions   = ["dynamodb:GetItem"]
-  #     resources = [aws_dynamodb_table.data_store.arn]
-  #   },
-  # }
-
 }
 
 resource "aws_lambda_function_url" "graphql" {

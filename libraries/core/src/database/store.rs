@@ -15,6 +15,7 @@ pub async fn store_database_item(
         .put_item()
         .table_name(table_name)
         .item("PK", data.get_pk())
+        .item("metadata", data.get_metadata())
         .item("value", data.to_dynamo_db())
         .send()
         .await

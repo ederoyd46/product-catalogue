@@ -9,6 +9,7 @@ use super::{Retrievable, Storable};
 pub struct CustomValue {
     pub key: String,
     pub value: Value,
+    pub metadata: Value,
 }
 
 impl CustomValue {
@@ -18,15 +19,19 @@ impl CustomValue {
     pub fn value(&self) -> &Value {
         &self.value
     }
+
+    pub fn metadata(&self) -> &Value {
+        &self.metadata
+    }
 }
 
 impl Retrievable<Self> for CustomValue {
     fn from_dynamo_db(data: HashMap<String, AttributeValue>) -> Option<Self> {
         let key = data.get("PK")?.as_s().unwrap();
-        let value = build_serde_value(data.get("value")?);
         Some(Self {
             key: key.to_string(),
-            value,
+            metadata: build_serde_value(data.get("metadata")?),
+            value: build_serde_value(data.get("value")?),
         })
     }
 }
@@ -37,6 +42,10 @@ impl Storable for CustomValue {
 
     fn get_pk(&self) -> AttributeValue {
         AttributeValue::S(self.key().to_string())
+    }
+
+    fn get_metadata(&self) -> AttributeValue {
+        build_attribute_value(self.metadata())
     }
 
     fn to_dynamo_db(&self) -> AttributeValue {

@@ -5,7 +5,7 @@ use core::types::{ApplicationError, Config, ConfigBuilder, CustomValue, Storable
 use log::{error, info};
 use serde_json::{json, Value};
 use std::env;
-
+use serde_json::value::to_value;
 use once_cell::sync::OnceCell;
 
 static CONFIG: OnceCell<Config> = OnceCell::new();
@@ -21,7 +21,7 @@ pub async fn app<T: DataTransferObject + serde::Serialize>(
         config
     } else {
         let config = ConfigBuilder::new()
-            .table_name(env::var("DATABASE").unwrap())
+            .table_name(env::var("DATABASE")?)
             .build()
             .await;
         CONFIG.set(config).unwrap();
@@ -29,12 +29,12 @@ pub async fn app<T: DataTransferObject + serde::Serialize>(
         CONFIG.get().unwrap()
     };
 
-    let value = serde_json::value::to_value(&dto).unwrap();
-    info!("{:?}", &dto.get_meta_data());
+    info!("Metadata {:?}", &dto.get_meta_data());
 
     let data = CustomValue {
         key: dto.get_key().to_string(),
-        value,
+        value: to_value(&dto)?,
+        metadata: to_value(&dto.get_meta_data())?,
     };
     let response = store_handler(&config, data).await?;
     Ok(json!(response))

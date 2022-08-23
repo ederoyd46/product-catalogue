@@ -20,11 +20,6 @@ impl DataTransferObject for Product {
     }
 
     fn get_meta_data(&self) -> Vec<String> {
-        [
-            self.key.to_string(),
-            self.price.to_string(),
-            self.name.to_string(),
-        ]
-        .to_vec()
+        [self.price.to_string(), self.name.to_string()].to_vec()
     }
 }

@@ -11,8 +11,7 @@ use std::io;
 
 #[route("/", method = "POST")]
 async fn route(body: web::Json<Inventory>) -> impl Responder {
-    let response = app(body.into_inner()).await.unwrap();
-    web::Json(response)
+    web::Json(app(body.into_inner()).await.unwrap())
 }
 
 #[tokio::main(flavor = "current_thread")]

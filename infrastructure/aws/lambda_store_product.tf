@@ -32,6 +32,7 @@ resource "aws_lambda_function_url" "store_product" {
   function_name = module.store_product.lambda_function_name
   # qualifier          = "db"
   authorization_type = "NONE"
+  
   # authorization_type = "AWS_IAM"
 
   cors {
