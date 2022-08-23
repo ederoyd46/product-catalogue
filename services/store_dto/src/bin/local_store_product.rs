@@ -1,4 +1,4 @@
-use ::store_product::app;
+use ::store_dto::app;
 use actix_web::{
     middleware, route,
     web::{self},
@@ -10,12 +10,12 @@ use log::info;
 use std::io;
 
 #[route("/", method = "POST")]
-async fn store_product(body: web::Json<Product>) -> impl Responder {
+async fn route(body: web::Json<Product>) -> impl Responder {
     let response = app(body.into_inner()).await.unwrap();
     web::Json(response)
 }
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> io::Result<()> {
-    local_http!(8081, store_product)
+    local_http!(8081, route)
 }

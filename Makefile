@@ -67,7 +67,7 @@ package:
 	
 # upx -9 target/$(CROSS_TARGET)/release/$$lambda
 
-release.package.deploy: release package deploy
+release.deploy: release package deploy
 
 tail.graphql:
 	@LOG_GROUP_NAME=$(shell $(TERRAFORM) output graphql_lambda_log_group); \

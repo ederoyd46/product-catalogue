@@ -1,4 +1,5 @@
 pub mod product;
+pub mod inventory;
 
 pub trait DataTransferObject: Send + Sync {
     fn is_valid(&self) -> bool;
