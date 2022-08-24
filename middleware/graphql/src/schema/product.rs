@@ -5,16 +5,15 @@ use juniper::{GraphQLInputObject, GraphQLObject};
 pub struct Price {
     pub currency_code: String,
     pub amount: f64,
-    pub precision: Option<i32>,
 }
 
 #[derive(GraphQLObject)]
 #[graphql(description = "A basic product representation")]
 pub struct Product {
-    pub id: String,
+    pub key: String,
     pub name: String,
-    pub description: Option<String>,
     pub price: Option<Price>,
+    pub description: Option<String>,
 }
 
 #[derive(GraphQLInputObject, Debug)]
@@ -22,13 +21,13 @@ pub struct Product {
 pub struct NewPrice {
     pub currency_code: String,
     pub amount: f64,
-    // pub precision: Option<i32>,
 }
 
 #[derive(GraphQLInputObject, Debug)]
 #[graphql(description = "A new product representation")]
 pub struct NewProduct {
+    pub key: String,
     pub name: String,
-    pub description: Option<String>,
     pub price: Option<NewPrice>,
+    pub description: Option<String>,
 }

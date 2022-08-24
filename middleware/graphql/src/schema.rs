@@ -4,7 +4,7 @@ use log::info;
 use std::env;
 
 mod product;
-use core::model::product::Product as ProductModel;
+use core::model::product::{Price, Product as ProductModel};
 use product::{NewProduct, Product};
 
 pub struct QueryRoot;
@@ -13,7 +13,7 @@ pub struct QueryRoot;
 impl QueryRoot {
     fn view_product(_id: String) -> FieldResult<Product> {
         Ok(Product {
-            id: "1234".to_owned(),
+            key: "1234".to_owned(),
             name: "Cardboard Box".to_owned(),
             description: Some("A cardboard box".to_owned()),
             price: None,
@@ -32,7 +32,12 @@ impl MutationRoot {
             key: "key".to_string(),
             description: Some("test product".to_string()),
             name: new_product.name,
-            price: 12.34,
+            price: Some({
+                Price {
+                    amount: 1.0,
+                    currency_code: "GBP".to_string(),
+                }
+            }),
         };
 
         let response = reqwest::Client::new()
@@ -44,7 +49,7 @@ impl MutationRoot {
         info!("Response {:?}", response);
 
         Ok(Product {
-            id: "1234".to_owned(),
+            key: "1234".to_owned(),
             name: "Cardboard Box".to_owned(),
             description: Some("A cardboard box".to_owned()),
             price: None,
