@@ -1,7 +1,9 @@
+use dto::add_field;
 use serde_derive::{Deserialize, Serialize};
 
 use super::DataTransferObject;
 
+#[add_field]
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Product {
     pub key: String,
