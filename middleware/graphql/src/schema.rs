@@ -29,7 +29,6 @@ impl MutationRoot {
         let store_product_url =
             env::var("STORE_PRODUCT_URL").expect("STORE_PRODUCT_URL must be set");
         let product = ProductModel {
-            a: "123".to_string(),
             key: "key".to_string(),
             description: Some("test product".to_string()),
             name: new_product.name,
