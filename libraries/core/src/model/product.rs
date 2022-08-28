@@ -1,4 +1,3 @@
-use dto::add_field;
 use serde_derive::{Deserialize, Serialize};
 
 use super::DataTransferObject;
