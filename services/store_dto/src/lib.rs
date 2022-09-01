@@ -29,12 +29,12 @@ pub async fn app<T: DataTransferObject + serde::Serialize>(
         CONFIG.get().unwrap()
     };
 
-    info!("Metadata {:?}", &dto.get_meta_data());
+    info!("Metadata {:?}", &dto.get_metadata());
 
     let data = CustomValue {
         key: dto.get_key().to_string(),
         value: to_value(&dto)?,
-        metadata: to_value(&dto.get_meta_data())?,
+        metadata: to_value(&dto.get_metadata())?,
     };
     let response = store_handler(&config, data).await?;
     Ok(json!(response))

@@ -25,7 +25,7 @@ impl DataTransferObject for Product {
         format!("{}{}", "PRODUCT:", self.key)
     }
 
-    fn get_meta_data(&self) -> Vec<String> {
+    fn get_metadata(&self) -> Vec<String> {
         let mut metadata = [self.name.to_string()].to_vec();
 
         if let Some(description) = &self.description {

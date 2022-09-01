@@ -20,7 +20,10 @@ pub fn add_field(args: TokenStream, input: TokenStream) -> TokenStream {
     if let syn::Fields::Named(ref mut fields) = item_struct.fields {
         fields.named.push(
             syn::Field::parse_named
-                .parse2(quote! { pub a: String })
+                .parse2(quote! {
+                    pub created_date: String,
+                    pub updated_date: String
+                })
                 .unwrap(),
         );
     }

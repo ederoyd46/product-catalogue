@@ -1,4 +1,4 @@
-use aws_sdk_dynamodb::Client;
+use aws_sdk_dynamodb::{Client, Endpoint};
 use aws_types::SdkConfig;
 #[derive(Debug)]
 pub struct Config {
@@ -9,12 +9,14 @@ pub struct Config {
 
 pub struct ConfigBuilder {
     table_name: String,
+    endpoint_url: Option<String>,
 }
 
 impl ConfigBuilder {
     pub fn new() -> Self {
         Self {
             table_name: "default_table".to_string(),
+            endpoint_url: None,
         }
     }
 
@@ -23,8 +25,19 @@ impl ConfigBuilder {
         self
     }
 
+    pub fn endpoint_url(mut self, endpoint_url: Option<String>) -> Self {
+        self.endpoint_url = endpoint_url;
+        self
+    }
+
     pub async fn build(self) -> Config {
-        let aws_sdk_config = aws_config::load_from_env().await; //TODO take the region and endpoint above into consideration
+        let aws_sdk_config = match self.endpoint_url {
+            Some(url) => aws_config::from_env().endpoint_resolver(Endpoint::immutable(
+                url.parse().expect("valid URI"),
+            )).load().await,
+            None => aws_config::load_from_env().await,
+        };
+
         Config {
             table_name: self.table_name,
             dynamodb: aws_sdk_dynamodb::Client::new(&aws_sdk_config),

@@ -17,7 +17,7 @@ impl DataTransferObject for Inventory {
         format!("{}{}", "INVENTORY:", self.key)
     }
 
-    fn get_meta_data(&self) -> Vec<String> {
+    fn get_metadata(&self) -> Vec<String> {
         [self.key.to_string(), self.inventory.to_string()].to_vec()
     }
 }
