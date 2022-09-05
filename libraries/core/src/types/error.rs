@@ -15,13 +15,3 @@ impl fmt::Display for AppError {
         )
     }
 }
-
-// Implement std::convert::From for AppError; from io::Error
-// impl From<io::Error> for AppError {
-//     fn from(error: io::Error) -> Self {
-//         AppError {
-//             kind: String::from("io"),
-//             message: error.to_string(),
-//         }
-//     }
-// }
