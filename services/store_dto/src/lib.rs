@@ -1,10 +1,9 @@
 use core::database::store_database_item;
 use core::error_and_panic;
 use core::model::DataTransferObject;
-use core::types::{ApplicationError, Config, ConfigBuilder, CustomValue, Storable};
+use core::types::{ApplicationError, Config, ConfigBuilder};
 use log::{error, info};
 use once_cell::sync::OnceCell;
-use serde_json::value::to_value;
 use serde_json::{json, Value};
 use std::env;
 
@@ -20,28 +19,25 @@ pub async fn app<T: DataTransferObject + serde::Serialize>(
     let config = if let Some(config) = CONFIG.get() {
         config
     } else {
-        let config = ConfigBuilder::new()
-            .table_name(env::var("DATABASE")?)
-            .endpoint_url(Some("http://localhost:4566".to_string()))
-            .build()
-            .await;
-        CONFIG.set(config).unwrap();
+        let mut config = ConfigBuilder::new().table_name(env::var("DATABASE")?);
+        if env::var("ENDPOINT_URL").is_ok() {
+            config = config.endpoint_url(Some(env::var("ENDPOINT_URL").unwrap()))
+        }
+        CONFIG.set(config.build().await).unwrap();
         info!("Configuration loaded");
         CONFIG.get().unwrap()
     };
 
     info!("Metadata {:?}", &dto.get_metadata());
 
-    let data = CustomValue {
-        key: dto.get_key().to_string(),
-        value: to_value(&dto)?,
-        metadata: to_value(&dto.get_metadata())?,
-    };
-    let response = store_handler(&config, data).await?;
+    let response = store_handler(&config, dto).await?;
     Ok(json!(response))
 }
 
-async fn store_handler<T: Storable>(config: &Config, data: T) -> Result<T, ApplicationError> {
+async fn store_handler<T: DataTransferObject>(
+    config: &Config,
+    data: T,
+) -> Result<T, ApplicationError> {
     if !data.is_valid() {
         error_and_panic!("No key specified");
     }

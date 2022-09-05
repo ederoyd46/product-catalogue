@@ -1,5 +1,3 @@
-mod store;
-mod retrieve;
+mod dynamodb;
 
-pub use store::*;
-pub use retrieve::*;
+pub use dynamodb::*;

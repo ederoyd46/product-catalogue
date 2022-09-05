@@ -1,85 +1,30 @@
 use aws_sdk_dynamodb::model::AttributeValue;
-use serde_derive::{Deserialize, Serialize};
-use serde_json::{Map, Number, Value};
-use std::collections::HashMap;
+use log::{self, debug};
 
-use super::{Retrievable, Storable};
+use aws_sdk_dynamodb::Client;
+use aws_sdk_dynamodb::{error::PutItemError, output::PutItemOutput, types::SdkError};
+use serde_json::value::to_value;
+use serde_json::{Map, Value};
 
-#[derive(Deserialize, Serialize, Debug)]
-pub struct CustomValue {
-    pub key: String,
-    pub value: Value,
-    pub metadata: Value,
-}
+use crate::model::DataTransferObject;
 
-impl CustomValue {
-    pub fn key(&self) -> &String {
-        &self.key
-    }
-    pub fn value(&self) -> &Value {
-        &self.value
-    }
+pub async fn store_database_item(
+    table_name: &str,
+    data: &impl DataTransferObject,
+    client: &Client,
+) -> Result<PutItemOutput, SdkError<PutItemError>> {
+    debug!("About to update DynamoDB");
+    let metadata = to_value(data.get_metadata()).unwrap();
+    let value = to_value(data).unwrap();
 
-    pub fn metadata(&self) -> &Value {
-        &self.metadata
-    }
-}
-
-impl Retrievable<Self> for CustomValue {
-    fn from_dynamo_db(data: HashMap<String, AttributeValue>) -> Option<Self> {
-        let key = data.get("PK")?.as_s().unwrap();
-        Some(Self {
-            key: key.to_string(),
-            metadata: build_serde_value(data.get("metadata")?),
-            value: build_serde_value(data.get("value")?),
-        })
-    }
-}
-impl Storable for CustomValue {
-    fn is_valid(&self) -> bool {
-        !self.key().is_empty()
-    }
-
-    fn get_pk(&self) -> AttributeValue {
-        AttributeValue::S(self.key().to_string())
-    }
-
-    fn get_metadata(&self) -> AttributeValue {
-        build_attribute_value(self.metadata())
-    }
-
-    fn to_dynamo_db(&self) -> AttributeValue {
-        build_attribute_value(self.value())
-    }
-}
-
-fn build_serde_value(attribute: &AttributeValue) -> Value {
-    if attribute.is_s() {
-        let val = attribute.as_s().unwrap();
-        Value::String(val.to_string())
-    } else if attribute.is_n() {
-        let val = attribute.as_n().unwrap();
-        // TODO Hate this..
-        match val.parse::<i64>() {
-            Ok(v) => Value::Number(Number::from(v)),
-            Err(_) => Value::Number(Number::from_f64(val.parse::<f64>().unwrap()).unwrap()),
-        }
-    } else if attribute.is_bool() {
-        let val = attribute.as_bool().unwrap().to_owned();
-        Value::Bool(val)
-    } else if attribute.is_m() {
-        let val = attribute.as_m().unwrap();
-        Value::Object(
-            val.iter()
-                .map(|(k, v)| (k.to_string(), build_serde_value(v)))
-                .collect(),
-        )
-    } else if attribute.is_l() {
-        let val = attribute.as_l().unwrap();
-        Value::Array(val.iter().map(|v| build_serde_value(v)).collect())
-    } else {
-        Value::Null
-    }
+    client
+        .put_item()
+        .table_name(table_name)
+        .item("PK", AttributeValue::S(data.get_key().to_string()))
+        .item("metadata", build_attribute_value(&metadata))
+        .item("value", build_attribute_value(&value))
+        .send()
+        .await
 }
 
 fn build_attribute_value(value: &Value) -> AttributeValue {

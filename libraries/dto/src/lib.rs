@@ -5,13 +5,6 @@ use syn::{
     parse_macro_input, ItemStruct,
 };
 
-// #[proc_macro_attribute]
-// pub fn show_streams(attr: TokenStream, item: TokenStream) -> TokenStream {
-//     println!("attr: \"{}\"", attr.to_string());
-//     println!("item: \"{}\"", item.to_string());
-//     item
-// }
-
 #[proc_macro_attribute]
 pub fn add_field(args: TokenStream, input: TokenStream) -> TokenStream {
     let mut item_struct = parse_macro_input!(input as ItemStruct);
