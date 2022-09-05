@@ -22,6 +22,7 @@ pub async fn app<T: DataTransferObject + serde::Serialize>(
     } else {
         let config = ConfigBuilder::new()
             .table_name(env::var("DATABASE")?)
+            .endpoint_url(Some("http://localhost:4566".to_string()))
             .build()
             .await;
         CONFIG.set(config).unwrap();
