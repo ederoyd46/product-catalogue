@@ -3,7 +3,7 @@ BASE_DIR=$(shell pwd)
 UNAME_S=$(shell uname -s)
 STAGE=${USER}
 
-AWS_CLI=aws
+AWS_CLI=aws --endpoint-url=http://localhost:4566
 TERRAFORM=terraform -chdir=./infrastructure/aws
 
 CROSS_TARGET=x86_64-unknown-linux-musl
@@ -75,4 +75,8 @@ release.deploy: release package deploy
 
 tail.graphql:
 	@LOG_GROUP_NAME=$(shell $(TERRAFORM) output graphql_lambda_log_group); \
+	$(AWS_CLI) logs tail $$LOG_GROUP_NAME --follow --format short
+
+tail.store.product:
+	@LOG_GROUP_NAME=$(shell $(TERRAFORM) output store_product_lambda_log_group); \
 	$(AWS_CLI) logs tail $$LOG_GROUP_NAME --follow --format short
