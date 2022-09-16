@@ -9,7 +9,9 @@ use product_catalogue_graphql::schema::{create_schema, Schema};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), Error> {
-    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
+    env_logger::builder()
+        .filter_level(log::LevelFilter::Info)
+        .init();
     let schema = Arc::new(create_schema());
     log::info!("Startup");
     lambda_http::run(service_fn(move |event| {

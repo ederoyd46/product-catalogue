@@ -1,6 +1,5 @@
 use juniper::FieldResult;
 use juniper::{EmptySubscription, RootNode};
-use log::info;
 use std::env;
 
 mod product;
@@ -46,7 +45,7 @@ impl MutationRoot {
             .send()
             .await;
 
-        info!("Response {:?}", response);
+        log::info!("Response {:?}", response);
 
         Ok(Product {
             key: "1234".to_owned(),

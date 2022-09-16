@@ -1,5 +1,4 @@
 use aws_sdk_dynamodb::model::AttributeValue;
-use log::{self, debug};
 
 use aws_sdk_dynamodb::Client;
 use aws_sdk_dynamodb::{error::PutItemError, output::PutItemOutput, types::SdkError};
@@ -13,7 +12,7 @@ pub async fn store_database_item(
     data: &impl DataTransferObject,
     client: &Client,
 ) -> Result<PutItemOutput, SdkError<PutItemError>> {
-    debug!("About to update DynamoDB");
+    log::debug!("About to update DynamoDB");
     let metadata = to_value(data.get_metadata()).unwrap();
     let value = to_value(data).unwrap();
 

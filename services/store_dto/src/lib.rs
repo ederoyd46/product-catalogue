@@ -2,7 +2,6 @@ use core::database::store_database_item;
 use core::error_and_panic;
 use core::model::DataTransferObject;
 use core::types::{ApplicationError, Config, ConfigBuilder};
-use log::{error, info};
 use once_cell::sync::OnceCell;
 use serde_json::{json, Value};
 use std::env;
@@ -31,11 +30,11 @@ pub async fn app<T: DataTransferObject + serde::Serialize>(
         }
 
         CONFIG.set(config.build().await).unwrap();
-        info!("Configuration loaded");
+        log::info!("Configuration loaded");
         CONFIG.get().unwrap()
     };
 
-    info!("Metadata {:?}", &dto.get_metadata());
+    log::info!("Metadata {:?}", &dto.get_metadata());
 
     let response = store_handler(&config, dto).await?;
     Ok(json!(response))
@@ -51,7 +50,7 @@ async fn store_handler<T: DataTransferObject>(
 
     let item_from_dynamo = store_database_item(&config.table_name, &data, &config.dynamodb).await?;
 
-    info!("item: {:?}", item_from_dynamo);
+    log::info!("item: {:?}", item_from_dynamo);
 
     Ok(data)
 }

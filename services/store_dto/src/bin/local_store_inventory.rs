@@ -6,7 +6,6 @@ use actix_web::{
 };
 use core::local_http;
 use core::model::inventory::Inventory;
-use log::info;
 use std::io;
 
 #[route("/", method = "POST")]
