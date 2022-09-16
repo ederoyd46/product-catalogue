@@ -1,13 +1,13 @@
 use juniper::{GraphQLInputObject, GraphQLObject};
 
-#[derive(GraphQLObject)]
+#[derive(GraphQLObject, Debug)]
 #[graphql(description = "A price structure")]
 pub struct Price {
     pub currency_code: String,
     pub amount: f64,
 }
 
-#[derive(GraphQLObject)]
+#[derive(GraphQLObject, Debug)]
 #[graphql(description = "A basic product representation")]
 pub struct Product {
     pub key: String,
