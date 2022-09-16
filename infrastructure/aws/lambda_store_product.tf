@@ -15,7 +15,7 @@ module "store_product" {
 
 
   environment_variables = {
-    DATABASE = aws_dynamodb_table.data_store.name
+    DATABASE     = aws_dynamodb_table.data_store.name
   }
 
   attach_policy_statements = true
@@ -32,7 +32,7 @@ resource "aws_lambda_function_url" "store_product" {
   function_name = module.store_product.lambda_function_name
   # qualifier          = "db"
   authorization_type = "NONE"
-  
+
   # authorization_type = "AWS_IAM"
 
   cors {

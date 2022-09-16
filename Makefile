@@ -31,7 +31,7 @@ test:
 
 #  Terraform
 plan:
-	@$(TERRAFORM) plan
+	@$(TERRAFORM) plan -var-file=terraform.tfvars
 
 terraform.init:
 	@$(TERRAFORM) init
@@ -78,5 +78,5 @@ tail.graphql:
 	$(AWS_CLI) logs tail $$LOG_GROUP_NAME --follow --format short
 
 tail.store.product:
-	@LOG_GROUP_NAME=$(shell $(TERRAFORM) output store_product_lambda_log_group); \
+	LOG_GROUP_NAME=$(shell $(TERRAFORM) output store_product_lambda_log_group); \
 	$(AWS_CLI) logs tail $$LOG_GROUP_NAME --follow --format short

@@ -8,11 +8,12 @@ services:
       - "127.0.0.1:4566:4566" # LocalStack Gateway
       - "127.0.0.1:4510-4559:4510-4559" # external services port range
     environment:
-      - SERVICES=lambda,dynamodb,cloudwatch
+      - SERVICES=lambda,dynamodb,cloudwatch,logs
       - PERSISTENCE=1
       - DEBUG=false
       - DOCKER_HOST=unix:///var/run/docker.sock
       - LAMBDA_EXECUTOR=docker-reuse
+      - LOCALSTACK_HOSTNAME=localstack
     volumes:
       - localstack-vol:/var/lib/localstack
       - "/var/run/docker.sock:/var/run/docker.sock"

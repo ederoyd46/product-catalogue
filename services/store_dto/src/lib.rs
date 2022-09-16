@@ -20,9 +20,16 @@ pub async fn app<T: DataTransferObject + serde::Serialize>(
         config
     } else {
         let mut config = ConfigBuilder::new().table_name(env::var("DATABASE")?);
-        if env::var("ENDPOINT_URL").is_ok() {
-            config = config.endpoint_url(Some(env::var("ENDPOINT_URL").unwrap()))
+        if env::var("LOCALSTACK_HOSTNAME").is_ok() {
+            let localstack_hostname = env::var("LOCALSTACK_HOSTNAME").unwrap();
+            let localstack_url = format!("http://{}:4566", localstack_hostname);
+            config = config.endpoint_url(Some(localstack_url))
         }
+        if env::var("ENDPOINT_URL").is_ok() {
+            let endpoint_url = env::var("ENDPOINT_URL").unwrap();
+            config = config.endpoint_url(Some(endpoint_url))
+        }
+
         CONFIG.set(config.build().await).unwrap();
         info!("Configuration loaded");
         CONFIG.get().unwrap()

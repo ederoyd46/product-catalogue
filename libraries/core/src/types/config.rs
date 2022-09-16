@@ -6,7 +6,7 @@ pub struct Config {
     pub aws_sdk_config: SdkConfig,
     pub dynamodb: Client,
 }
-
+#[derive(Debug)]
 pub struct ConfigBuilder {
     table_name: String,
     endpoint_url: Option<String>,
@@ -31,10 +31,15 @@ impl ConfigBuilder {
     }
 
     pub async fn build(self) -> Config {
+        log::info!("ConfigBuilder: {:?}", &self);
+
         let aws_sdk_config = match self.endpoint_url {
-            Some(url) => aws_config::from_env().endpoint_resolver(Endpoint::immutable(
-                url.parse().expect("valid URI"),
-            )).load().await,
+            Some(url) => {
+                aws_config::from_env()
+                    .endpoint_resolver(Endpoint::immutable(url.parse().expect("valid URI")))
+                    .load()
+                    .await
+            }
             None => aws_config::load_from_env().await,
         };
 
