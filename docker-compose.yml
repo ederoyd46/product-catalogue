@@ -16,7 +16,6 @@ services:
       - 53:53/udp
     cap_add:
       - NET_ADMIN
-      # dnsmasq container config above is taken verbatim from https://hub.docker.com/r/strm/dnsmasq
     networks:
       default:
         ipv4_address: 172.16.1.253 # Static IP here makes it possible in docker comspose v3 to point other containers' dns here.
@@ -28,20 +27,19 @@ services:
       - "127.0.0.1:4566:4566" # LocalStack Gateway
       - "127.0.0.1:4510-4559:4510-4559" # external services port range
     environment:
-      - SERVICES=lambda,dynamodb,cloudwatch,logs
-      - PERSISTENCE=1
-      - DEBUG=false
+      - SERVICES=s3,lambda,dynamodb,cloudwatch,logs
       - DOCKER_HOST=unix:///var/run/docker.sock
+      - LAMBDA_DOCKER_DNS=172.16.1.253
       - LAMBDA_EXECUTOR=docker-reuse
       - DEFAULT_REGION=eu-central-1
-      - LAMBDA_DOCKER_DNS=172.16.1.253
+      - PERSISTENCE=1
+      - DEBUG=false
       # - LOCALSTACK_HOSTNAME=localhost.localstack.cloud
       # - HOSTNAME_FROM_LAMBDA=localhost.localstack.cloud
       # - DNS_ADDRESS=127.0.0.1
       # - DNS_LOCAL_NAME_PATTERNS='.*(ecr|lambda-url).*.localhost.localstack.cloud'
       # - HOSTNAME_EXTERNAL=localhost.localstack.cloud
       # - HOSTNAME=localhost.localstack.cloud
-    # privileged: true
     volumes:
       - localstack-vol:/var/lib/localstack
       - "/var/run/docker.sock:/var/run/docker.sock"
