@@ -9,6 +9,7 @@ networks:
           # As of this writing, `ip_range` is not supported in v3, thus we will explictly specify IP
 services:
   dnsmasq:
+    container_name: "dnsmasq"
     image: strm/dnsmasq
     volumes:
       - "./dnsmasq.conf:/etc/dnsmasq.conf" #this file has wildcard dns entries for localstack
