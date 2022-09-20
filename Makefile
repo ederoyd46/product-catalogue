@@ -73,6 +73,9 @@ package:
 
 release.deploy: release package deploy
 
+terraform.output:
+	$(TERRAFORM) output
+
 tail.graphql:
 	@LOG_GROUP_NAME=$(shell $(TERRAFORM) output graphql_lambda_log_group); \
 	$(AWS_CLI) logs tail $$LOG_GROUP_NAME --follow --format short
