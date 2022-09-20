@@ -33,7 +33,7 @@ services:
       - LAMBDA_DOCKER_DNS=172.16.1.253
       - LAMBDA_EXECUTOR=docker-reuse
       - DEFAULT_REGION=eu-central-1
-      - PERSISTENCE=1
+      - PERSISTENCE=0
       - DEBUG=false
       # - LOCALSTACK_HOSTNAME=localhost.localstack.cloud
       # - HOSTNAME_FROM_LAMBDA=localhost.localstack.cloud
