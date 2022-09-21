@@ -23,8 +23,10 @@ build_local:
 build_lambda: 
 	@cargo build --bin "lambda_*"
 
-run_local_graph: 
-	@cargo run --bin local_graphql
+run_local_graph:
+	STORE_PRODUCT_URL="$(shell $(TERRAFORM) output store_product_url)"
+	STORE_INVENTORY_URL="$(shell $(TERRAFORM) output store_inventory_url)"
+	$$STORE_PRODUCT_URL $$STORE_INVENTORY_URL cargo run --bin local_graphql
 
 test:
 	@cargo test
@@ -83,3 +85,4 @@ tail.graphql:
 tail.store.product:
 	LOG_GROUP_NAME=$(shell $(TERRAFORM) output store_product_lambda_log_group); \
 	$(AWS_CLI) logs tail $$LOG_GROUP_NAME --follow --format short
+
