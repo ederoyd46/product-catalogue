@@ -17,13 +17,13 @@ CROSS_COMPILE=x86_64-linux-musl-
 build: 
 	@cargo build 
 
-build_local: 
+build.local: 
 	@cargo build --bin "local_*"
 
-build_lambda: 
+build.lambda: 
 	@cargo build --bin "lambda_*"
 
-run_local_graph:
+run.local.graph:
 	STORE_PRODUCT_URL="$(shell $(TERRAFORM) output store_product_url)" \
 	STORE_INVENTORY_URL="$(shell $(TERRAFORM) output store_inventory_url)" \
 	cargo run --bin local_graphql
