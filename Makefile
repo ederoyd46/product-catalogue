@@ -24,9 +24,9 @@ build_lambda:
 	@cargo build --bin "lambda_*"
 
 run_local_graph:
-	STORE_PRODUCT_URL="$(shell $(TERRAFORM) output store_product_url)"
-	STORE_INVENTORY_URL="$(shell $(TERRAFORM) output store_inventory_url)"
-	$$STORE_PRODUCT_URL $$STORE_INVENTORY_URL cargo run --bin local_graphql
+	STORE_PRODUCT_URL="$(shell $(TERRAFORM) output store_product_url)" \
+	STORE_INVENTORY_URL="$(shell $(TERRAFORM) output store_inventory_url)" \
+	cargo run --bin local_graphql
 
 test:
 	@cargo test
