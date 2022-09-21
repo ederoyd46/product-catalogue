@@ -24,7 +24,7 @@ build.lambda:
 	@cargo build --bin "lambda_*"
 
 run.local.graph:
-	STORE_PRODUCT_URL="$(shell $(TERRAFORM) output store_product_url)" \
+	@STORE_PRODUCT_URL="$(shell $(TERRAFORM) output store_product_url)" \
 	STORE_INVENTORY_URL="$(shell $(TERRAFORM) output store_inventory_url)" \
 	cargo run --bin local_graphql
 
@@ -33,7 +33,7 @@ test:
 
 #  Terraform
 plan:
-	@$(TERRAFORM) plan -var-file=terraform.tfvars
+	@$(TERRAFORM) plan
 
 terraform.init:
 	@$(TERRAFORM) init
@@ -44,9 +44,8 @@ deploy:
 remove:
 	@$(TERRAFORM) destroy -auto-approve
 
-output:
+terraform.output:
 	@$(TERRAFORM) output
-
 
 release:
 ifeq ("$(UNAME_S)","Linux")
@@ -70,13 +69,8 @@ package:
 		fi \
 	done ; \
 	rm -rf $$TEMP_DIR
-	
-# upx -9 target/$(CROSS_TARGET)/release/$$lambda
 
 release.deploy: release package deploy
-
-terraform.output:
-	$(TERRAFORM) output
 
 tail.graphql:
 	@LOG_GROUP_NAME=$(shell $(TERRAFORM) output graphql_lambda_log_group); \
