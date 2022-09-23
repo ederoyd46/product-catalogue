@@ -13,8 +13,8 @@ services:
     image: strm/dnsmasq
     volumes:
       - "./dnsmasq.conf:/etc/dnsmasq.conf" #this file has wildcard dns entries for localstack
-    ports:
-      - 53:53/udp
+    # ports:
+    # - 53:53/udp
     cap_add:
       - NET_ADMIN
     networks:

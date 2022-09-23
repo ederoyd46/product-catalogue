@@ -23,10 +23,22 @@ build.local:
 build.lambda: 
 	@cargo build --bin "lambda_*"
 
-run.local.graph:
+run.local.graph.against.deployed:
 	@STORE_PRODUCT_URL="$(shell $(TERRAFORM) output store_product_url)" \
 	STORE_INVENTORY_URL="$(shell $(TERRAFORM) output store_inventory_url)" \
 	cargo run --bin local_graphql
+
+run.local:
+	@LAMBDAS="$(shell cargo metadata --no-deps --format-version 1 | jq '.packages[].targets[]| select(.name | startswith("local")) | .name' | sed -e s/\"//g)" && \
+	for lambda in $$LAMBDAS ; do \
+		cargo run --bin $$lambda & \
+	done; \
+
+kill.local: 
+	@LAMBDAS="$(shell cargo metadata --no-deps --format-version 1 | jq '.packages[].targets[]| select(.name | startswith("local")) | .name' | sed -e s/\"//g)" && \
+	for lambda in $$LAMBDAS ; do \
+		killall $$lambda; \
+	done; 
 
 test:
 	@cargo test
