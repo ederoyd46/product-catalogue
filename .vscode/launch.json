@@ -7,6 +7,29 @@
     {
       "type": "lldb",
       "request": "launch",
+      "name": "Debug executable 'local_graphql'",
+      "cargo": {
+        "args": [
+          "build",
+          "--bin=local_graphql",
+          "--package=product_catalogue_graphql"
+        ],
+        "filter": {
+          "name": "local_graphql",
+          "kind": "bin"
+        }
+      },
+      "env": {
+        //   "DATABASE": "default-product-catalogue",
+        "STORE_PRODUCT_URL": "http://localhost:8081",
+        "STORE_INVENTORY_URL": "http://localhost:8082"
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
       "name": "Debug executable 'local_store_product'",
       "cargo": {
         "args": ["build", "--bin=local_store_product", "--package=store_dto"],
