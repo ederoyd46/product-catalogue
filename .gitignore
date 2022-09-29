@@ -6,3 +6,4 @@ target
 deploy
 .terraform.lock.hcl
 .vscode/*.log
+.idea
