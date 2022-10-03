@@ -22,6 +22,7 @@
       "name": "Debug executable 'local_store_product'",
       "program": "${workspaceRoot}/target/debug/local_store_product",
       "env": {
+        "ENDPOINT_URL": "http://localhost:4566",
         "DATABASE": "default-product-catalogue"
       },
       "sourceLanguages": ["rust"],
@@ -33,6 +34,7 @@
       "name": "Debug executable 'local_store_inventory'",
       "program": "${workspaceRoot}/target/debug/local_store_inventory",
       "env": {
+        "ENDPOINT_URL": "http://localhost:4566",
         "DATABASE": "default-product-catalogue"
       },
       "args": [],
