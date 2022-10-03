@@ -7,7 +7,7 @@
     {
       "type": "lldb",
       "request": "launch",
-      "name": "Debug executable 'local_graphql'",
+      "name": "GraphQL",
       "program": "${workspaceRoot}/target/debug/local_graphql",
       "env": {
         "STORE_PRODUCT_URL": "http://localhost:8081",
@@ -19,7 +19,7 @@
     {
       "type": "lldb",
       "request": "launch",
-      "name": "Debug executable 'local_store_product'",
+      "name": "StoreProduct",
       "program": "${workspaceRoot}/target/debug/local_store_product",
       "env": {
         "ENDPOINT_URL": "http://localhost:4566",
@@ -31,7 +31,7 @@
     {
       "type": "lldb",
       "request": "launch",
-      "name": "Debug executable 'local_store_inventory'",
+      "name": "StoreInventory",
       "program": "${workspaceRoot}/target/debug/local_store_inventory",
       "env": {
         "ENDPOINT_URL": "http://localhost:4566",
@@ -39,6 +39,13 @@
       },
       "args": [],
       "cwd": "${workspaceFolder}"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "GraphQL/Services",
+      "configurations": ["GraphQL", "StoreProduct", "StoreInventory"],
+      "stopAll": true
     }
   ]
 }
