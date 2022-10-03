@@ -8,53 +8,30 @@
       "type": "lldb",
       "request": "launch",
       "name": "Debug executable 'local_graphql'",
-      "cargo": {
-        "args": [
-          "build",
-          "--bin=local_graphql",
-          "--package=product_catalogue_graphql"
-        ],
-        "filter": {
-          "name": "local_graphql",
-          "kind": "bin"
-        }
-      },
+      "program": "${workspaceRoot}/target/debug/local_graphql",
       "env": {
-        //   "DATABASE": "default-product-catalogue",
         "STORE_PRODUCT_URL": "http://localhost:8081",
         "STORE_INVENTORY_URL": "http://localhost:8082"
       },
-      "args": [],
+      "sourceLanguages": ["rust"],
       "cwd": "${workspaceFolder}"
     },
     {
       "type": "lldb",
       "request": "launch",
       "name": "Debug executable 'local_store_product'",
-      "cargo": {
-        "args": ["build", "--bin=local_store_product", "--package=store_dto"],
-        "filter": {
-          "name": "local_store_product",
-          "kind": "bin"
-        }
-      },
+      "program": "${workspaceRoot}/target/debug/local_store_product",
       "env": {
         "DATABASE": "default-product-catalogue"
       },
-      "args": [],
+      "sourceLanguages": ["rust"],
       "cwd": "${workspaceFolder}"
     },
     {
       "type": "lldb",
       "request": "launch",
       "name": "Debug executable 'local_store_inventory'",
-      "cargo": {
-        "args": ["build", "--bin=local_store_inventory", "--package=store_dto"],
-        "filter": {
-          "name": "local_store_inventory",
-          "kind": "bin"
-        }
-      },
+      "program": "${workspaceRoot}/target/debug/local_store_inventory",
       "env": {
         "DATABASE": "default-product-catalogue"
       },
