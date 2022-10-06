@@ -1,6 +1,6 @@
 FROM ubuntu:latest
-MAINTAINER Matthew Brown <matt@ederoyd.co.uk>
-ENV DEBIAN_FRONTEND noninteractive
+LABEL MAINTAINER Matthew Brown <matt@ederoyd.co.uk>
+ARG DEBIAN_FRONTEND noninteractive
 
 RUN apt update
 RUN apt upgrade -y 
@@ -12,21 +12,15 @@ RUN apt install -y \
     direnv \
     unzip \
     jq \
-    zip
-
-RUN apt install -y \
+    zip \ 
     git-extras \
-    fish
-    # pipx \
-    # musl-tools \
-    # cmake \
-    # g++ \
-    # xvfb \
-    # libatk1.0-0 \
-    # libatk-bridge2.0-0 \
-    # librust-gdk-pixbuf-sys-dev \
-    # libgtk-3-0 \
-    # libgbm1 \
-    # libasound2 \
-    # libnss3 \
-    # oathtool \
+    fish \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+ARG BUILD_DATE
+ARG RUST_VERSION
+
+RUN /usr/bin/fish -c "curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable"
+RUN /usr/bin/fish -c "set -Ua fish_user_paths $HOME/.cargo/bin"
+RUN /usr/bin/fish -c "rustup component add rust-std rust-analysis rust-std-x86_64-unknown-linux-musl --toolchain stable"
