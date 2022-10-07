@@ -109,7 +109,7 @@ dynamodb.table.create:
 dynamodb.table.scan:
 	@$(AWS_CLI) dynamodb scan --table-name default-product-catalogue
 
-dynamodb.table.list.pk:
+dynamodb.table.scan.pk:
 	@make dynamodb.table.scan | jq .Items[].PK.S
 
 docker.start.dynamodb:
