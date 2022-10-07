@@ -107,8 +107,22 @@ docker.start.dynamodb:
 		--key-schema=AttributeName=PK,KeyType=HASH \
 		--billing-mode PAY_PER_REQUEST
 
+docker.start.scylladb:
+	@docker run --name=scylladb-local --rm=true -d -p 4566:4566 scylladb/scylla --alternator-port 4566 --alternator-write-isolation always
+	@echo Wait 30 seconds for ScyllaDB to start
+	@sleep 30
+	@echo Create default-product-catalogue
+	@$(AWS_CLI) dynamodb create-table \
+		--table-name default-product-catalogue \
+		--attribute-definitions=AttributeName=PK,AttributeType=S \
+		--key-schema=AttributeName=PK,KeyType=HASH \
+		--billing-mode PAY_PER_REQUEST
+
 docker.start.localstack:
 	@docker compose up -d
 
-dynamodb.list.tables:
-	$(AWS_CLI) dynamodb list-tables
+dynamodb.table.list:
+	@$(AWS_CLI) dynamodb list-tables
+
+dynamodb.table.scan:
+	@$(AWS_CLI) dynamodb scan --table-name default-product-catalogue
