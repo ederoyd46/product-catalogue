@@ -96,33 +96,29 @@ tail.store.invetory:
 	LOG_GROUP_NAME=$(shell $(TERRAFORM) output store_inventory_lambda_log_group); \
 	$(AWS_CLI) logs tail $$LOG_GROUP_NAME --follow --format short
 
-docker.start.dynamodb:
-	@docker run --name=dynamodb-local --rm=true -d -p 4566:8000 amazon/dynamodb-local
-	@echo Wait 5 seconds for DynamoDB to start
-	@sleep 5
-	@echo Create default-product-catalogue
-	@$(AWS_CLI) dynamodb create-table \
-		--table-name default-product-catalogue \
-		--attribute-definitions=AttributeName=PK,AttributeType=S \
-		--key-schema=AttributeName=PK,KeyType=HASH \
-		--billing-mode PAY_PER_REQUEST
-
-docker.start.scylladb:
-	@docker run --name=scylladb-local --rm=true -d -p 4566:4566 scylladb/scylla --alternator-port 4566 --alternator-write-isolation always
-	@echo Wait 30 seconds for ScyllaDB to start
-	@sleep 30
-	@echo Create default-product-catalogue
-	@$(AWS_CLI) dynamodb create-table \
-		--table-name default-product-catalogue \
-		--attribute-definitions=AttributeName=PK,AttributeType=S \
-		--key-schema=AttributeName=PK,KeyType=HASH \
-		--billing-mode PAY_PER_REQUEST
-
-docker.start.localstack:
-	@docker compose up -d
-
 dynamodb.table.list:
 	@$(AWS_CLI) dynamodb list-tables
 
+dynamodb.table.create:
+	@$(AWS_CLI) dynamodb create-table \
+		--table-name default-product-catalogue \
+		--attribute-definitions=AttributeName=PK,AttributeType=S \
+		--key-schema=AttributeName=PK,KeyType=HASH \
+		--billing-mode PAY_PER_REQUEST
+
 dynamodb.table.scan:
 	@$(AWS_CLI) dynamodb scan --table-name default-product-catalogue
+
+dynamodb.table.list.pk:
+	@make dynamodb.table.scan | jq .Items[].PK.S
+
+docker.start.dynamodb:
+	@docker run --name=dynamodb-local --rm=true -d -p 4566:8000 amazon/dynamodb-local
+	@docker logs -f dynamodb-local
+
+docker.start.scylladb:
+	@docker run --name=scylladb-local --rm=true -d -p 4566:4566 scylladb/scylla --alternator-port 4566 --alternator-write-isolation always
+	@docker logs -f scylladb-local
+
+docker.start.localstack:
+	@docker compose up -d
