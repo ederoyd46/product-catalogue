@@ -1,7 +1,6 @@
 # Global
 BASE_DIR=$(shell pwd)
 UNAME_S=$(shell uname -s)
-STAGE=${USER}
 
 AWS_CLI=aws --endpoint-url=http://localhost:4566
 TERRAFORM=terraform -chdir=./infrastructure/aws
