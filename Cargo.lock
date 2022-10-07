@@ -881,6 +881,7 @@ dependencies = [
  "aws-sdk-dynamodb",
  "aws-types",
  "log",
+ "once_cell",
  "serde",
  "serde_derive",
  "serde_json",
@@ -1984,6 +1985,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "retrieve_dto"
+version = "0.0.1"
+dependencies = [
+ "actix-cors",
+ "actix-web",
+ "actix-web-lab",
+ "core",
+ "env_logger",
+ "lambda_http",
+ "log",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "tokio",
+]
+
+[[package]]
 name = "ring"
 version = "0.16.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2258,7 +2276,6 @@ dependencies = [
  "env_logger",
  "lambda_http",
  "log",
- "once_cell",
  "serde",
  "serde_derive",
  "serde_json",

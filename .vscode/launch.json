@@ -8,7 +8,9 @@
       "program": "${workspaceRoot}/target/debug/local_graphql",
       "env": {
         "STORE_PRODUCT_URL": "http://localhost:8081",
-        "STORE_INVENTORY_URL": "http://localhost:8082"
+        "STORE_INVENTORY_URL": "http://localhost:8082",
+        "RETRIEVE_PRODUCT_URL": "http://localhost:8181",
+        "RETRIEVE_INVENTORY_URL": "http://localhost:8182"
       },
       "sourceLanguages": ["rust"],
       "cwd": "${workspaceFolder}"
@@ -36,12 +38,42 @@
       },
       "args": [],
       "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "RetrieveProduct",
+      "program": "${workspaceRoot}/target/debug/local_retrieve_product",
+      "env": {
+        "ENDPOINT_URL": "http://localhost:4566",
+        "DATABASE": "default-product-catalogue"
+      },
+      "sourceLanguages": ["rust"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "RetrieveInventory",
+      "program": "${workspaceRoot}/target/debug/local_retrieve_inventory",
+      "env": {
+        "ENDPOINT_URL": "http://localhost:4566",
+        "DATABASE": "default-product-catalogue"
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
     }
   ],
   "compounds": [
     {
       "name": "GraphQL/Services",
-      "configurations": ["GraphQL", "StoreProduct", "StoreInventory"],
+      "configurations": [
+        "GraphQL",
+        "StoreProduct",
+        "StoreInventory",
+        "RetrieveProduct",
+        "RetrieveInventory"
+      ],
       "preLaunchTask": "rust: cargo build",
       "stopAll": true
     }

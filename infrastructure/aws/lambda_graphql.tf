@@ -16,6 +16,8 @@ module "graphql" {
   environment_variables = {
     STORE_PRODUCT_URL   = aws_lambda_function_url.store_product.function_url
     STORE_INVENTORY_URL = aws_lambda_function_url.store_inventory.function_url
+    RETRIEVE_PRODUCT_URL   = aws_lambda_function_url.retrieve_product.function_url
+    RETRIEVE_INVENTORY_URL = aws_lambda_function_url.retrieve_inventory.function_url
   }
 }
 

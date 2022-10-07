@@ -1,5 +1,5 @@
 [package]
-name = "store_dto"
+name = "retrieve_dto"
 version = "0.0.1"
 edition = "2021"
 
