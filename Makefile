@@ -25,7 +25,9 @@ build.lambda:
 
 run.local.graph.against.deployed:
 	@STORE_PRODUCT_URL="$(shell $(TERRAFORM) output store_product_url)" \
-	STORE_INVENTORY_URL="$(shell $(TERRAFORM) output store_inventory_url)" \
+	@STORE_INVENTORY_URL="$(shell $(TERRAFORM) output store_inventory_url)" \
+	@RETRIEVE_PRODUCT_URL="$(shell $(TERRAFORM) output retrieve_product_url)" \
+	@RETRIEVE_INVENTORY_URL="$(shell $(TERRAFORM) output retrieve_inventory_url)" \
 	cargo run --bin local_graphql
 
 run.local:
