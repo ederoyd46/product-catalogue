@@ -4,7 +4,7 @@
 	"name": "Rust and PostgreSQL",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
-	"workspaceFolder": "/workspace",
+	// "workspaceFolder": "/workspace",
 
 	// Configure tool-specific properties.
 	"customizations": {
