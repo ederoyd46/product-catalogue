@@ -41,10 +41,7 @@
 	"remoteUser": "vscode",
 	"features": {
 		"terraform": "latest",
-		"git": "latest",
-		"github-cli": "latest",
 		"aws-cli": "latest",
-		"sshd": "latest",
 		"fish": "latest"
 	}
 }
