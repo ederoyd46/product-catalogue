@@ -23,7 +23,7 @@ services:
     #   - SYS_PTRACE
 
     volumes:
-      - workspace:/workspaces/product-catalogue
+      - workspace:/workspaces
 
 
     #  /workspaces/product-catalogue 
@@ -54,4 +54,4 @@ services:
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
 volumes:
-  workspace: {}
+  workspace:
