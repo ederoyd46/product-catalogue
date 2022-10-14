@@ -13,8 +13,6 @@ services:
     image: strm/dnsmasq
     volumes:
       - "./dnsmasq.conf:/etc/dnsmasq.conf" #this file has wildcard dns entries for localstack
-    # ports:
-    # - 53:53/udp
     cap_add:
       - NET_ADMIN
     networks:
@@ -35,12 +33,6 @@ services:
       - DEFAULT_REGION=eu-central-1
       - PERSISTENCE=0
       - DEBUG=false
-      # - LOCALSTACK_HOSTNAME=localhost.localstack.cloud
-      # - HOSTNAME_FROM_LAMBDA=localhost.localstack.cloud
-      # - DNS_ADDRESS=127.0.0.1
-      # - DNS_LOCAL_NAME_PATTERNS='.*(ecr|lambda-url).*.localhost.localstack.cloud'
-      # - HOSTNAME_EXTERNAL=localhost.localstack.cloud
-      # - HOSTNAME=localhost.localstack.cloud
     volumes:
       - localstack-vol:/var/lib/localstack
       - "/var/run/docker.sock:/var/run/docker.sock"
