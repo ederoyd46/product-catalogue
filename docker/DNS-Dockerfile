@@ -1,0 +1,3 @@
+FROM strm/dnsmasq:latest
+LABEL MAINTAINER Matthew Brown <matt@ederoyd.co.uk>
+RUN echo "address=/localhost.localstack.cloud/172.16.1.252" > /etc/dnsmasq.conf
