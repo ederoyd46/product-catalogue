@@ -5,10 +5,9 @@ networks:
       config:
         - subnet: 172.16.0.0/23
 services:
-  backend:
+  development:
     build:
-      dockerfile: ./.docker/DNS-Env-Dockerfile
-      # context: backend
+      dockerfile: .docker/DNS-Env-Dockerfile
       target: development
     depends_on:
       - localstack
@@ -16,7 +15,7 @@ services:
   dnsmasq:
     container_name: "dnsmasq"
     build:
-      dockerfile: ./.docker/DNS-Dockerfile
+      dockerfile: .docker/DNS-Dockerfile
     cap_add:
       - NET_ADMIN
     networks:
