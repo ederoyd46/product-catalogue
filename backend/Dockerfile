@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:latest as development
 LABEL MAINTAINER Matthew Brown <matt@ederoyd.co.uk>
 ARG DEBIAN_FRONTEND noninteractive
 
