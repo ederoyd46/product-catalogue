@@ -7,7 +7,7 @@ networks:
 services:
   development:
     build:
-      dockerfile: .docker/DNS-Env-Dockerfile
+      dockerfile: .docker/Dev-Env-Dockerfile
       target: development
     depends_on:
       - localstack
