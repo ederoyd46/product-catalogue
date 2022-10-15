@@ -6,9 +6,10 @@ networks:
         - subnet: 172.16.0.0/23
 services:
   development:
-    build:
-      dockerfile: .docker/Dev-Env-Dockerfile
-      target: development
+    image: ederoyd46/rust-dev:20221015
+    # build:
+    #   dockerfile: .docker/Dev-Env-Dockerfile
+    #   target: development
     depends_on:
       - localstack
       - dnsmasq
