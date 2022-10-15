@@ -3,12 +3,13 @@ networks:
   default:
     ipam:
       config:
-        - subnet: 172.16.0.0/23 
+        - subnet: 172.16.0.0/23
 services:
   backend:
     build:
-      context: backend
       dockerfile: ./DNS-Env-Dockerfile
+      context: backend
+      target: development
     depends_on:
       - localstack
       - dnsmasq
