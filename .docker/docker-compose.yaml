@@ -16,7 +16,7 @@ services:
   dnsmasq:
     container_name: "dnsmasq"
     build:
-      dockerfile: ./DNS-Dockerfile
+      dockerfile: ./.docker/DNS-Dockerfile
     cap_add:
       - NET_ADMIN
     networks:
