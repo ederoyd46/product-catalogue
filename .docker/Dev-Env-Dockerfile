@@ -5,6 +5,11 @@ ARG DEBIAN_FRONTEND noninteractive
 RUN apt update
 RUN apt upgrade -y 
 
+RUN apt install -y \
+    make \
+    fish \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 # RUN apt install -y \
 #     make \
 #     musl \
