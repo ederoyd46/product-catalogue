@@ -1,25 +1,25 @@
-FROM ubuntu:latest
+FROM ubuntu:latest as development
 LABEL MAINTAINER Matthew Brown <matt@ederoyd.co.uk>
 ARG DEBIAN_FRONTEND noninteractive
 
 RUN apt update
 RUN apt upgrade -y 
 
-RUN apt install -y \
-    make \
-    musl \
-    musl-dev \
-    direnv \
-    unzip \
-    jq \
-    zip \ 
-    git-extras \
-    fish \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+# RUN apt install -y \
+#     make \
+#     musl \
+#     musl-dev \
+#     direnv \
+#     unzip \
+#     jq \
+#     zip \ 
+#     git-extras \
+#     fish \
+#     curl \
+#     && rm -rf /var/lib/apt/lists/*
 
-ARG BUILD_DATE
-ARG RUST_VERSION
+# ARG BUILD_DATE
+# ARG RUST_VERSION
 
 RUN /usr/bin/fish -c "curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable"
 RUN /usr/bin/fish -c "set -Ua fish_user_paths $HOME/.cargo/bin"
