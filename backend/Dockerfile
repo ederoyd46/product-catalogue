@@ -1,4 +1,4 @@
-FROM ubuntu:latest as development
+FROM ubuntu:latest as build
 LABEL MAINTAINER Matthew Brown <matt@ederoyd.co.uk>
 ARG DEBIAN_FRONTEND noninteractive
 
@@ -20,6 +20,8 @@ RUN apt install -y \
 
 ARG BUILD_DATE
 ARG RUST_VERSION
+
+FROM build AS development
 
 RUN /usr/bin/fish -c "curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable"
 RUN /usr/bin/fish -c "set -Ua fish_user_paths $HOME/.cargo/bin"

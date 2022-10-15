@@ -7,7 +7,7 @@ networks:
 services:
   backend:
     build:
-      dockerfile: ./DNS-Env-Dockerfile
+      # dockerfile: ./DNS-Env-Dockerfile
       context: backend
       target: development
     depends_on:
