@@ -6,7 +6,7 @@ networks:
         - subnet: 172.16.0.0/23
 services:
   development:
-    image: ederoyd46/rust-dev:20221015
+    image: ederoyd46/rust-dev:20221016
     # build:
     #   dockerfile: .docker/Dev-Env-Dockerfile
     #   target: development
