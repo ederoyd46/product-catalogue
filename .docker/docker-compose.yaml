@@ -13,6 +13,7 @@ services:
     depends_on:
       - localstack
       - dnsmasq
+    command: sleep infinity # This is a hack to keep the container running
   dnsmasq:
     container_name: "dnsmasq"
     build:
