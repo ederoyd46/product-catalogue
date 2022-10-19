@@ -1,6 +1,7 @@
 {
   "version": "0.2.0",
   "configurations": [
+
     {
       "type": "lldb",
       "request": "launch",
@@ -74,7 +75,7 @@
         "RetrieveProduct",
         "RetrieveInventory"
       ],
-      "preLaunchTask": "rust: cargo build",
+      // "preLaunchTask": "rust: cargo build",
       "stopAll": true
     }
   ]
