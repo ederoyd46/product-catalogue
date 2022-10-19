@@ -30,4 +30,6 @@ RUN /usr/bin/fish -c "set -Ua fish_user_paths ~/.local/bin"
 RUN /usr/bin/fish -c "set -Ua fish_user_paths ~/.volta/bin"
 RUN /usr/bin/fish -c "set -Ua fish_user_paths ~/bin"
 
+RUN /usr/bin/fish -c 'echo "direnv hook fish" | source >> ~/.config/fish/config.fish'
+
 CMD sleep infinity
