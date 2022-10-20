@@ -8,7 +8,17 @@ use log::{self, debug};
 
 use aws_sdk_dynamodb::Client;
 
-pub async fn retrieve_database_item(
+pub async fn retrieve_item(
+    table_name: &str,
+    retrieve_value: &impl DataTransferObject,
+    client: &Client,
+) -> Result<Value, SdkError<GetItemError>> {
+    let database_item = retrieve_database_item(table_name, retrieve_value, client).await?;
+    let item = database_item.item.unwrap();
+    Ok(build_serde_value(item.get("value").unwrap()))
+}
+
+async fn retrieve_database_item(
     table_name: &str,
     retrieve_value: &impl DataTransferObject,
     client: &Client,

@@ -4,13 +4,14 @@ use actix_web::{
     web::{self},
     App, HttpResponse, HttpServer, Responder,
 };
-use core::local_http;
-use core::model::product::Product;
+use core::{local_http, model::product_search::ProductSearch};
+use log::info;
 use std::io;
 
-#[route("/", method = "POST")]
-async fn route(body: web::Json<Product>) -> impl Responder {
-    let response_data = app(body.into_inner()).await.unwrap();
+#[route("/{key}", method = "GET")]
+async fn route(key: web::Path<String>) -> impl Responder {
+    let response_data = app(ProductSearch { key: key.clone() }).await.unwrap();
+    info!("Key {:?}", response_data);
     HttpResponse::Ok().json(response_data)
 }
 

@@ -1,7 +1,19 @@
 {
   "version": "0.2.0",
   "configurations": [
-
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Cargo launch local_retrieve_product",
+      "cargo": {
+        "args": ["build", "--bin", "local_retrieve_product"]
+      },
+      "env": {
+        "ENDPOINT_URL": "http://localhost:4566",
+        "DATABASE": "default-product-catalogue"
+      },      
+      "args": []
+    },
     {
       "type": "lldb",
       "request": "launch",

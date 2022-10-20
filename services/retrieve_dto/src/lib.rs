@@ -1,5 +1,5 @@
 use core::config::build_config;
-use core::database::retrieve_database_item;
+use core::database::retrieve_item;
 use core::error_and_panic;
 use core::model::DataTransferObject;
 use core::types::{ApplicationError, Config};
@@ -23,15 +23,14 @@ pub async fn app<T: DataTransferObject + serde::Serialize>(
 async fn retrieve_handler<T: DataTransferObject>(
     config: &Config,
     data: T,
-) -> Result<T, ApplicationError> {
+) -> Result<Value, ApplicationError> {
     if !data.is_valid() {
         error_and_panic!("No key specified");
     }
 
-    let item_from_dynamo =
-        retrieve_database_item(&config.table_name, &data, &config.dynamodb).await?;
+    let value = retrieve_item(&config.table_name, &data, &config.dynamodb).await?;
 
-    log::info!("item: {:?}", item_from_dynamo);
+    log::info!("value: {:?}", value);
 
-    Ok(data)
+    Ok(value)
 }

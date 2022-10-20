@@ -1,7 +1,8 @@
 use serde::Serialize;
 
-pub mod product;
 pub mod inventory;
+pub mod product;
+pub mod product_search;
 
 pub trait DataTransferObject: Send + Sync + Serialize {
     fn is_valid(&self) -> bool;
