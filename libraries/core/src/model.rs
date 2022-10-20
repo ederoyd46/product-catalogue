@@ -1,6 +1,7 @@
 use serde::Serialize;
 
 pub mod inventory;
+pub mod inventory_search;
 pub mod product;
 pub mod product_search;
 

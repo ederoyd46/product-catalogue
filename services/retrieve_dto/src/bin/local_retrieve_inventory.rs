@@ -2,15 +2,18 @@ use ::retrieve_dto::app;
 use actix_web::{
     middleware, route,
     web::{self},
-    App, HttpServer, Responder, HttpResponse,
+    App, HttpResponse, HttpServer, Responder,
 };
-use core::local_http;
-use core::model::inventory::Inventory;
+use core::{local_http, model::inventory_search::InventorySearch};
 use std::io;
 
-#[route("/", method = "POST")]
-async fn route(body: web::Json<Inventory>) -> impl Responder {
-    let response_data = app(body.into_inner()).await.unwrap();
+#[route("/{key}", method = "GET")]
+async fn route(key: web::Path<String>) -> impl Responder {
+    let response_data = app(InventorySearch {
+        key: key.into_inner(),
+    })
+    .await
+    .unwrap();
     HttpResponse::Ok().json(response_data)
 }
 
