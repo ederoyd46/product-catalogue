@@ -10,3 +10,7 @@ pub trait DataTransferObject: Send + Sync + Serialize {
     fn get_key(&self) -> String;
     fn get_metadata(&self) -> Vec<String>;
 }
+
+pub trait DataQueryObject<T>: Send + Sync + Serialize {
+    fn new(key: T, args: Option<Vec<String>>) -> Self;
+}

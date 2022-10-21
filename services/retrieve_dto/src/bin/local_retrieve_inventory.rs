@@ -4,16 +4,14 @@ use actix_web::{
     web::{self},
     App, HttpResponse, HttpServer, Responder,
 };
-use core::{local_http, model::inventory_search::InventorySearch};
+use core::{local_http, model::inventory_search::InventorySearch, model::DataQueryObject};
 use std::io;
 
 #[route("/{key}", method = "GET")]
 async fn route(key: web::Path<String>) -> impl Responder {
-    let response_data = app(InventorySearch {
-        key: key.into_inner(),
-    })
-    .await
-    .unwrap();
+    let response_data = app(InventorySearch::new(key.into_inner(), None))
+        .await
+        .unwrap();
     HttpResponse::Ok().json(response_data)
 }
 

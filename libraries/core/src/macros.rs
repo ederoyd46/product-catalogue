@@ -46,25 +46,53 @@ macro_rules! local_http {
     }};
 }
 #[macro_export]
-macro_rules! aws_lambda_http {
+macro_rules! aws_lambda_http_post {
     ($DTO:ty, $function:expr) => {{
         env_logger::builder()
             .filter_level(log::LevelFilter::Info)
             .init();
         log::info!("Initialise Lambda");
-        lambda_http::run(service_fn(move |event: Request| {
-            let body = match event.body() {
-                Body::Text(val) => val.as_ref(),
-                Body::Binary(val) => std::str::from_utf8(val).unwrap(),
-                Body::Empty => error_and_panic!("Invalid input, please use a string"),
-            };
-            let value: $DTO = match serde_json::from_str(body) {
-                Ok(item) => item,
-                Err(e) => error_and_panic!("Could not parse input to known type", e),
-            };
+        lambda_http::run(lambda_http::service_fn(
+            move |event: lambda_http::Request| {
+                let (parts, body) = event.into_parts();
+                log::debug!("Received parts: {:?}", parts);
 
-            $function(value.clone())
-        }))
+                let body_data = match body {
+                    lambda_http::Body::Text(val) => val,
+                    lambda_http::Body::Binary(val) => String::from_utf8(val).unwrap(),
+                    lambda_http::Body::Empty => {
+                        core::error_and_panic!("Invalid input, please use a string")
+                    }
+                };
+                let value: $DTO = match serde_json::from_str(&body_data) {
+                    Ok(item) => item,
+                    Err(e) => core::error_and_panic!("Could not parse input to known type", e),
+                };
+
+                $function(value.clone())
+            },
+        ))
+        .await?;
+        Ok(())
+    }};
+}
+#[macro_export]
+macro_rules! aws_lambda_http_get {
+    ($DQO:ty, $function:expr) => {{
+        env_logger::builder()
+            .filter_level(log::LevelFilter::Info)
+            .init();
+        log::info!("Initialise Lambda");
+        lambda_http::run(lambda_http::service_fn(
+            move |event: lambda_http::Request| {
+                let (parts, body) = event.into_parts();
+                log::debug!("Received event: {:?}", parts);
+                log::info!("GET request {:?}", parts.uri);
+                let mut chars = parts.uri.path().chars();
+                chars.next();
+                $function(<$DQO>::new(String::from(chars.as_str()), None))
+            },
+        ))
         .await?;
         Ok(())
     }};

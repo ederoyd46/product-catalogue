@@ -1,10 +1,11 @@
-use lambda_http::{service_fn, tower::BoxError, Body, Request};
+use lambda_http::tower::BoxError;
 
 use ::retrieve_dto::app;
-use core::model::inventory::Inventory;
-use core::{aws_lambda_http, error_and_panic};
+use core::aws_lambda_http_get;
+use core::model::inventory_search::InventorySearch;
+use core::model::DataQueryObject;
 
 #[tokio::main]
 async fn main() -> Result<(), BoxError> {
-    aws_lambda_http!(Inventory, app)
+    aws_lambda_http_get!(InventorySearch, app)
 }

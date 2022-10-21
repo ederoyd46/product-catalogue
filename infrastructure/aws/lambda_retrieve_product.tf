@@ -22,7 +22,7 @@ module "retrieve_product" {
   policy_statements = {
     service_config = {
       effect    = "Allow",
-      actions   = ["dynamodb:PutItem"]
+      actions   = ["dynamodb:GetItem"]
       resources = [aws_dynamodb_table.data_store.arn]
     },
   }
@@ -38,7 +38,7 @@ resource "aws_lambda_function_url" "retrieve_product" {
   cors {
     allow_credentials = true
     allow_origins     = ["*"]
-    allow_methods     = ["POST"]
+    allow_methods     = ["GET"]
     allow_headers     = ["date", "keep-alive"]
     expose_headers    = ["keep-alive", "date"]
     max_age           = 86400

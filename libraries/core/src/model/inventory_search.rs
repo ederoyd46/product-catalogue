@@ -1,10 +1,16 @@
 use serde_derive::{Deserialize, Serialize};
 
-use super::DataTransferObject;
+use super::{DataQueryObject, DataTransferObject};
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct InventorySearch {
     pub key: String,
+}
+
+impl DataQueryObject<String> for InventorySearch {
+    fn new(key: String, _args: Option<Vec<String>>) -> Self {
+        InventorySearch { key: key }
+    }
 }
 
 impl DataTransferObject for InventorySearch {
