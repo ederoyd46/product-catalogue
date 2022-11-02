@@ -2,7 +2,7 @@ use ::store_dto::app;
 use actix_web::{
     middleware, route,
     web::{self},
-    App, HttpServer, Responder, HttpResponse,
+    App, HttpResponse, HttpServer, Responder,
 };
 use core::local_http;
 use core::model::inventory::Inventory;

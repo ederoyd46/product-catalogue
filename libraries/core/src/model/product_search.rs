@@ -11,7 +11,7 @@ impl DataQueryObject<String> for ProductSearch {
     fn new(key: String, _args: Option<Vec<String>>) -> Self {
         ProductSearch { key }
     }
-} 
+}
 
 impl DataTransferObject for ProductSearch {
     fn is_valid(&self) -> bool {
