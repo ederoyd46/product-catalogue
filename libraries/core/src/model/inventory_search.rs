@@ -9,13 +9,13 @@ pub struct InventorySearch {
 
 impl DataQueryObject<String> for InventorySearch {
     fn new(key: String, _args: Option<Vec<String>>) -> Self {
-        InventorySearch { key: key }
+        InventorySearch { key }
     }
 }
 
 impl DataTransferObject for InventorySearch {
     fn is_valid(&self) -> bool {
-        !&self.key.is_empty()
+        !self.key.is_empty()
     }
 
     fn get_key(&self) -> String {

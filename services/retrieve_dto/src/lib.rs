@@ -16,7 +16,7 @@ pub async fn app<T: DataQueryObject<String> + DataTransferObject + serde::Serial
 
     log::info!("Metadata {:?}", &dto.get_metadata());
 
-    let response = retrieve_handler(&config, dto).await?;
+    let response = retrieve_handler(config, dto).await?;
     Ok(json!(response))
 }
 

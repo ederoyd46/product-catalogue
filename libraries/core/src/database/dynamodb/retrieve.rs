@@ -58,7 +58,7 @@ fn build_serde_value(attribute: &AttributeValue) -> Value {
         )
     } else if attribute.is_l() {
         let val = attribute.as_l().unwrap();
-        Value::Array(val.iter().map(|v| build_serde_value(v)).collect())
+        Value::Array(val.iter().map(build_serde_value).collect())
     } else {
         Value::Null
     }

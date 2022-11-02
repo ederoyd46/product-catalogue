@@ -18,7 +18,7 @@ pub struct Price {
 
 impl DataTransferObject for Product {
     fn is_valid(&self) -> bool {
-        !&self.key.is_empty()
+        !self.key.is_empty()
     }
 
     fn get_key(&self) -> String {

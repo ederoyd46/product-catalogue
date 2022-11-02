@@ -16,7 +16,7 @@ pub async fn app<T: DataTransferObject + serde::Serialize>(
 
     log::info!("Metadata {:?}", &dto.get_metadata());
 
-    let response = store_handler(&config, dto).await?;
+    let response = store_handler(config, dto).await?;
     Ok(json!(response))
 }
 

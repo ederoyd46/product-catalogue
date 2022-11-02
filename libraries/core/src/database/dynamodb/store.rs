@@ -30,7 +30,7 @@ fn build_attribute_value(value: &Value) -> AttributeValue {
     match value {
         Value::String(val) => AttributeValue::S(val.to_string()),
         Value::Null => AttributeValue::Null(true),
-        Value::Bool(val) => AttributeValue::Bool(val.clone()),
+        Value::Bool(val) => AttributeValue::Bool(*val),
         Value::Number(val) => AttributeValue::N(val.to_string()),
         Value::Array(val) => build_dynamodb_array(val),
         Value::Object(val) => build_dynamodb_object(val),
@@ -47,7 +47,7 @@ fn build_dynamodb_object(object: &Map<String, Value>) -> AttributeValue {
 }
 
 fn build_dynamodb_array(object: &[Value]) -> AttributeValue {
-    AttributeValue::L(object.iter().map(|v| build_attribute_value(v)).collect())
+    AttributeValue::L(object.iter().map(build_attribute_value).collect())
 }
 
 #[cfg(test)]
