@@ -1,11 +1,11 @@
 use juniper::FieldResult;
 use juniper::{EmptySubscription, RootNode};
-use serde_json::Value;
 use std::env;
 
 mod product;
-use core::model::product::{Price as PriceModel, Product as ProductModel};
-use product::{NewProduct, Price, Product};
+mod price;
+use core::model::product::Product as ProductModel;
+use product::{NewProduct, Product};
 
 pub struct QueryRoot;
 
@@ -20,18 +20,12 @@ impl QueryRoot {
             .await;
 
         match response {
-            Ok(response) => {
-                let product: ProductModel = response.json().await.unwrap();
-                Ok(Product {
-                    key: product.key,
-                    name: product.name,
-                    description: product.description,
-                    price: product.price.map(|price| Price {
-                        amount: price.amount,
-                        currency_code: price.currency_code,
-                    }),
-                })
-            }
+            Ok(response) => Ok(Product::from(
+                response
+                    .json::<ProductModel>()
+                    .await
+                    .expect("Failed to parse response"),
+            )),
             Err(error) => Err(juniper::FieldError::new(
                 "Error retrieving product",
                 juniper::Value::scalar(error.to_string()),
@@ -47,37 +41,28 @@ impl MutationRoot {
     async fn create_product(new_product: NewProduct) -> FieldResult<Product> {
         let store_product_url =
             env::var("STORE_PRODUCT_URL").expect("STORE_PRODUCT_URL must be set");
-        let product = ProductModel {
-            key: new_product.key.to_string(),
-            name: new_product.name,
-            description: new_product.description,
-            price: Some({
-                PriceModel {
-                    amount: 1.0,
-                    currency_code: "GBP".to_string(),
-                }
-            }),
-        };
+
+        let product = Product::from(new_product);
+        let product_model: ProductModel = product.try_into().expect("count not be converted");
 
         let response = reqwest::Client::new()
             .post(store_product_url)
-            .json(&product)
+            .json(&product_model)
             .send()
-            .await
-            .unwrap()
-            .json::<ProductModel>()
-            .await
-            .unwrap();
+            .await;
 
-        Ok(Product {
-            key: response.key,
-            name: response.name,
-            description: response.description,
-            price: response.price.map(|price| Price {
-                amount: price.amount,
-                currency_code: price.currency_code,
-            }),
-        })
+        match response {
+            Ok(response) => Ok(Product::from(
+                response
+                    .json::<ProductModel>()
+                    .await
+                    .expect("Failed to parse response"),
+            )),
+            Err(error) => Err(juniper::FieldError::new(
+                "Error retrieving product",
+                juniper::Value::scalar(error.to_string()),
+            )),
+        }
     }
 }
 

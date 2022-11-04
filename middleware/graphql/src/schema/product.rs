@@ -1,13 +1,9 @@
+use core::model::product::Product as ProductModel;
 use juniper::{GraphQLInputObject, GraphQLObject};
 
-#[derive(GraphQLObject, Debug)]
-#[graphql(description = "A price structure")]
-pub struct Price {
-    pub currency_code: String,
-    pub amount: f64,
-}
+use super::price::{NewPrice, Price};
 
-#[derive(GraphQLObject, Debug)]
+#[derive(GraphQLObject, Debug, Clone)]
 #[graphql(description = "A basic product representation")]
 pub struct Product {
     pub key: String,
@@ -16,11 +12,37 @@ pub struct Product {
     pub description: Option<String>,
 }
 
-#[derive(GraphQLInputObject, Debug)]
-#[graphql(description = "A new price structure")]
-pub struct NewPrice {
-    pub currency_code: String,
-    pub amount: f64,
+impl From<ProductModel> for Product {
+    fn from(item: ProductModel) -> Self {
+        Product {
+            key: item.key,
+            name: item.name,
+            description: item.description,
+            price: item.price.map(Price::from),
+        }
+    }
+}
+
+impl From<Product> for ProductModel {
+    fn from(item: Product) -> Self {
+        ProductModel {
+            key: item.key,
+            name: item.name,
+            description: item.description,
+            price: item.price.map(From::from),
+        }
+    }
+}
+
+impl From<NewProduct> for Product {
+    fn from(item: NewProduct) -> Self {
+        Product {
+            key: item.key,
+            name: item.name,
+            description: item.description,
+            price: item.price.map(Price::from),
+        }
+    }
 }
 
 #[derive(GraphQLInputObject, Debug)]
