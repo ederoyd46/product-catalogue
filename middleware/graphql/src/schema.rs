@@ -1,5 +1,6 @@
 use juniper::FieldResult;
 use juniper::{EmptySubscription, RootNode};
+use serde_json::Value;
 use std::env;
 
 mod product;
@@ -10,13 +11,32 @@ pub struct QueryRoot;
 
 #[juniper::graphql_object]
 impl QueryRoot {
-    fn view_product(_id: String) -> FieldResult<Product> {
-        Ok(Product {
-            key: "1234".to_owned(),
-            name: "Cardboard Box".to_owned(),
-            description: Some("A cardboard box".to_owned()),
-            price: None,
-        })
+    async fn view_product(key: String) -> FieldResult<Product> {
+        let retrieve_product_url =
+            env::var("RETRIEVE_PRODUCT_URL").expect("RETRIEVE_PRODUCT_URL must be set");
+        let response = reqwest::Client::new()
+            .get(format!("{}/{}", retrieve_product_url, key))
+            .send()
+            .await;
+
+        match response {
+            Ok(response) => {
+                let product: ProductModel = response.json().await.unwrap();
+                Ok(Product {
+                    key: product.key,
+                    name: product.name,
+                    description: product.description,
+                    price: product.price.map(|price| Price {
+                        amount: price.amount,
+                        currency_code: price.currency_code,
+                    }),
+                })
+            }
+            Err(error) => Err(juniper::FieldError::new(
+                "Error retrieving product",
+                juniper::Value::scalar(error.to_string()),
+            )),
+        }
     }
 }
 
