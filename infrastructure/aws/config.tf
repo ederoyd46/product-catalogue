@@ -31,13 +31,13 @@ provider "aws" {
 }
 
 terraform {
-  backend "s3" {
-    key      = "product-catalogue/terraform"
-    encrypt  = false
-    bucket   = "ederoyd"
-    region   = "eu-central-1"
-    endpoint = "http://localhost.localstack.cloud:4566"
-  }
+  # backend "s3" {
+  #   key      = "product-catalogue/terraform"
+  #   encrypt  = false
+  #   bucket   = "ederoyd"
+  #   region   = "eu-central-1"
+  #   endpoint = "http://localhost.localstack.cloud:4566"
+  # }
 
   required_providers {
     aws = {
