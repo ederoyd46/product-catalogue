@@ -127,7 +127,7 @@ query {
 }
 ```
 
-### Rest (using POSTMAN)
+### REST (using Postman)
 
 ```json
 POST http://localhost:8081
