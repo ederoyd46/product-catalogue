@@ -27,7 +27,22 @@ jobs:
       with:
         toolchain: stable
         override: true
+        components: clippy
         target: x86_64-unknown-linux-musl
+    - name: Install required cargo
+      run: cargo install clippy-sarif sarif-fmt
+    - name: Run rust-clippy
+      run:
+        cargo clippy
+        --all-features
+        --message-format=json | clippy-sarif | tee rust-clippy-results.sarif | sarif-fmt
+      continue-on-error: true
+    - name: Upload analysis results to GitHub
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: rust-clippy-results.sarif
+        wait-for-processing: true
+      
     - name: Test
       run: make test
     - name: Build Release
