@@ -10,7 +10,7 @@ pub struct Price {
 
 impl From<PriceModel> for Price {
     fn from(item: PriceModel) -> Self {
-        Price {
+        Self {
             amount: item.amount,
             currency_code: item.currency_code,
         }
@@ -19,7 +19,7 @@ impl From<PriceModel> for Price {
 
 impl From<Price> for PriceModel {
     fn from(item: Price) -> Self {
-        PriceModel {
+        Self {
             amount: item.amount,
             currency_code: item.currency_code,
         }
@@ -28,7 +28,7 @@ impl From<Price> for PriceModel {
 
 impl From<NewPrice> for Price {
     fn from(item: NewPrice) -> Self {
-        Price {
+        Self {
             amount: item.amount,
             currency_code: item.currency_code,
         }

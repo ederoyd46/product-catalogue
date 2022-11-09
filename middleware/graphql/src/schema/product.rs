@@ -14,7 +14,7 @@ pub struct Product {
 
 impl From<ProductModel> for Product {
     fn from(item: ProductModel) -> Self {
-        Product {
+        Self {
             key: item.key,
             name: item.name,
             description: item.description,
@@ -25,7 +25,7 @@ impl From<ProductModel> for Product {
 
 impl From<Product> for ProductModel {
     fn from(item: Product) -> Self {
-        ProductModel {
+        Self {
             key: item.key,
             name: item.name,
             description: item.description,
@@ -36,7 +36,7 @@ impl From<Product> for ProductModel {
 
 impl From<NewProduct> for Product {
     fn from(item: NewProduct) -> Self {
-        Product {
+        Self {
             key: item.key,
             name: item.name,
             description: item.description,
