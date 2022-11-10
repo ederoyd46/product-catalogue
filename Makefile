@@ -125,4 +125,6 @@ docker.start.localstack:
 	@docker compose up -d
 
 build.fly.image:
+	@CROSS_COMPILE=$(CROSS_COMPILE) cargo build --target=$(CROSS_TARGET) --release --bin "local_graphql"
 	@docker build -f ./infrastructure/fly/Dockerfile.GraphQL --tag ederoyd46/graphql .
+	@flyctl deploy -c ./infrastructure/fly/fly.toml -i ederoyd46/graphql:latest --local-only -a ederoyd-graphql
