@@ -1,19 +1,22 @@
-# flyctl launch added from .gitignore
-**/target
-**/.DS_Store
-**/.terraform
-**/*.zip
-**/*.tfstate*
-**/deploy
-**/.terraform.lock.hcl
-**/.vscode/*.log
-**/.idea
+# # flyctl launch added from .gitignore
+# # **/target
+# **/.DS_Store
+# **/.terraform
+# **/*.zip
+# **/*.tfstate*
+# **/deploy
+# **/.terraform.lock.hcl
+# **/.vscode/*.log
+# **/.idea
 
-# flyctl launch added from .idea/.gitignore
-# Default ignored files
-.idea/shelf
-.idea/workspace.xml
+# # flyctl launch added from .idea/.gitignore
+# # Default ignored files
+# .idea/shelf
+# .idea/workspace.xml
 
-# flyctl launch added from infrastructure/aws/.terraform/modules/graphql/.gitignore
-# Local .terraform directories
-infrastructure
+# # flyctl launch added from infrastructure/aws/.terraform/modules/graphql/.gitignore
+# # Local .terraform directories
+# infrastructure
+
+*
+!target

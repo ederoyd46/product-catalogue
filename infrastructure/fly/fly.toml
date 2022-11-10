@@ -1,0 +1,11 @@
+# fly.toml file generated for shy-shadow-8458 on 2022-11-10T11:24:09Z
+
+app = "shy-shadow-8458"
+
+[[services]]
+internal_port = 8080
+protocol = "tcp"
+
+[[services.ports]]
+handlers = ["http"]
+port = 80

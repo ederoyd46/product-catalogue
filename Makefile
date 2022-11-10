@@ -123,3 +123,6 @@ docker.start.scylladb:
 
 docker.start.localstack:
 	@docker compose up -d
+
+build.fly.image:
+	@docker build -f ./infrastructure/fly/Dockerfile.GraphQL --tag ederoyd46/graphql .
