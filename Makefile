@@ -8,6 +8,8 @@ TERRAFORM=terraform -chdir=./infrastructure/aws
 CROSS_TARGET=x86_64-unknown-linux-musl
 CROSS_COMPILE=x86_64-linux-musl-
 
+CURRENT_TAG_VERSION=$(shell git log --format="%h" -n 1)
+
 # Tasks
 
 .PHONY: deploy
@@ -126,5 +128,11 @@ docker.start.localstack:
 
 build.fly.image:
 	@CROSS_COMPILE=$(CROSS_COMPILE) cargo build --target=$(CROSS_TARGET) --release --bin "local_graphql"
-	@docker build -f ./infrastructure/fly/Dockerfile.GraphQL --tag ederoyd46/graphql .
-	@flyctl deploy -c ./infrastructure/fly/fly.toml -i ederoyd46/graphql:latest --local-only -a ederoyd-graphql
+	@docker build -f ./infrastructure/fly/Dockerfile.GraphQL --tag registry.fly.io/ederoyd-graphql:$(CURRENT_TAG_VERSION) .
+	# @flyctl deploy -c ./infrastructure/fly/fly.toml -i ederoyd46/graphql:$(CURRENT_TAG_VERSION) --local-only -a ederoyd-graphql
+
+deploy.fly.image:
+	@docker push registry.fly.io/ederoyd-graphql:$(CURRENT_TAG_VERSION)
+	@flyctl deploy -c ./infrastructure/fly/fly.toml -i registry.fly.io/ederoyd-graphql:$(CURRENT_TAG_VERSION) -a ederoyd-graphql
+
+
