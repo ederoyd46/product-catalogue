@@ -11,7 +11,6 @@ CROSS_COMPILE=x86_64-linux-musl-
 CURRENT_TAG_VERSION=$(shell git log --format="%h" -n 1)
 
 # Tasks
-
 .PHONY: deploy
 
 # Build Locally
