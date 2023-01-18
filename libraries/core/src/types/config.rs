@@ -1,4 +1,4 @@
-use aws_sdk_dynamodb::{Client, Endpoint};
+use aws_sdk_dynamodb::Client;
 use aws_types::SdkConfig;
 #[derive(Debug)]
 pub struct Config {
@@ -34,12 +34,7 @@ impl ConfigBuilder {
         log::info!("ConfigBuilder: {:?}", &self);
 
         let aws_sdk_config = match self.endpoint_url {
-            Some(url) => {
-                aws_config::from_env()
-                    .endpoint_resolver(Endpoint::immutable(url.parse().expect("valid URI")))
-                    .load()
-                    .await
-            }
+            Some(url) => aws_config::from_env().endpoint_url(url).load().await,
             None => aws_config::load_from_env().await,
         };
 
