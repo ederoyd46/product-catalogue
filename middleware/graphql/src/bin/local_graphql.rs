@@ -20,6 +20,8 @@ async fn graphql(schema: web::Data<Schema>, data: web::Json<GraphQLRequest>) -> 
 async fn main() -> io::Result<()> {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
+    // let matt = format!("HELLO");
+
     // Create Juniper schema
     let schema = Arc::new(create_schema());
 

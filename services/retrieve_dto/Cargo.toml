@@ -18,7 +18,7 @@ serde_derive = "1"
 env_logger = "0.10.0"
 
 actix-web = "4"
-actix-web-lab = "0.18"
+actix-web-lab = "0.19"
 actix-cors = "0.6"
 
 core = { path = "../../libraries/core" }
