@@ -22,7 +22,7 @@ services:
       - "0.0.0.0:4566:4566"
       # - "127.0.0.1:4510-4559:4510-4559" # external services port range
     environment:
-      - SERVICES=s3,lambda,dynamodb,cloudwatch,logs
+      - SERVICES=s3,lambda,dynamodb,cloudwatch,logs,iam
       - DOCKER_HOST=unix:///var/run/docker.sock
       - LAMBDA_DOCKER_DNS=172.16.1.253
       - LAMBDA_EXECUTOR=docker-reuse

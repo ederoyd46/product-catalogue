@@ -2,8 +2,8 @@ use juniper::FieldResult;
 use juniper::{EmptySubscription, RootNode};
 use std::env;
 
-mod product;
 mod price;
+mod product;
 use core::model::product::Product as ProductModel;
 use product::{NewProduct, Product};
 

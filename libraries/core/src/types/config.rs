@@ -1,5 +1,7 @@
+use aws_config::BehaviorVersion;
 use aws_sdk_dynamodb::Client;
 use aws_types::SdkConfig;
+
 #[derive(Debug)]
 pub struct Config {
     pub table_name: String,
@@ -34,13 +36,19 @@ impl ConfigBuilder {
         log::info!("ConfigBuilder: {:?}", &self);
 
         let aws_sdk_config = match self.endpoint_url {
-            Some(url) => aws_config::from_env().endpoint_url(url).load().await,
-            None => aws_config::load_from_env().await,
+            Some(url) => {
+                aws_config::defaults(BehaviorVersion::v2023_11_09())
+                    .endpoint_url(url)
+                    .load()
+                    .await
+            }
+
+            None => aws_config::load_defaults(BehaviorVersion::v2023_11_09()).await,
         };
 
         Config {
             table_name: self.table_name,
-            dynamodb: aws_sdk_dynamodb::Client::new(&aws_sdk_config),
+            dynamodb: Client::new(&aws_sdk_config),
             aws_sdk_config,
         }
     }

@@ -1,7 +1,7 @@
-use aws_sdk_dynamodb::model::AttributeValue;
-
+use aws_sdk_dynamodb::error::SdkError;
+use aws_sdk_dynamodb::operation::put_item::{PutItemError, PutItemOutput};
+use aws_sdk_dynamodb::types::AttributeValue;
 use aws_sdk_dynamodb::Client;
-use aws_sdk_dynamodb::{error::PutItemError, output::PutItemOutput, types::SdkError};
 use serde_json::value::to_value;
 use serde_json::{Map, Value};
 
@@ -53,7 +53,7 @@ fn build_dynamodb_array(object: &[Value]) -> AttributeValue {
 #[cfg(test)]
 mod tests {
     use super::build_attribute_value;
-    use aws_sdk_dynamodb::model::AttributeValue;
+    use aws_sdk_dynamodb::types::AttributeValue;
     use serde_json::{Number, Value};
 
     #[test]

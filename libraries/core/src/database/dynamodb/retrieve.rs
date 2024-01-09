@@ -1,11 +1,11 @@
 use crate::model::DataTransferObject;
-use aws_sdk_dynamodb::{
-    error::GetItemError, model::AttributeValue, output::GetItemOutput, types::SdkError,
-};
 use serde_json::{Number, Value};
 
 use log::{self, debug};
 
+use aws_sdk_dynamodb::error::SdkError;
+use aws_sdk_dynamodb::operation::get_item::{GetItemError, GetItemOutput};
+use aws_sdk_dynamodb::types::AttributeValue;
 use aws_sdk_dynamodb::Client;
 
 pub async fn retrieve_item(
