@@ -94,7 +94,7 @@ tail.store.product:
 	LOG_GROUP_NAME=$(shell $(TERRAFORM) output store_product_lambda_log_group); \
 	$(AWS_CLI) logs tail $$LOG_GROUP_NAME --follow --format short
 
-tail.store.invetory:
+tail.store.inventory:
 	LOG_GROUP_NAME=$(shell $(TERRAFORM) output store_inventory_lambda_log_group); \
 	$(AWS_CLI) logs tail $$LOG_GROUP_NAME --follow --format short
 

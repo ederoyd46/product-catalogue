@@ -43,7 +43,7 @@ impl MutationRoot {
             env::var("STORE_PRODUCT_URL").expect("STORE_PRODUCT_URL must be set");
 
         let product = Product::from(new_product);
-        let product_model: ProductModel = product.try_into().expect("count not be converted");
+        let product_model: ProductModel = product.into();
 
         let response = reqwest::Client::new()
             .post(store_product_url)

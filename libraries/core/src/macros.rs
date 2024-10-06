@@ -11,22 +11,22 @@ macro_rules! error_and_panic {
     }};
 }
 
-#[macro_export]
-macro_rules! log_and_throw {
-    ($message:expr) => {{
-        log::error!("{}", $message);
-        return Err(AppError {
-            kind: "Application",
-            message: $message,
-        });
-    }};
+// #[macro_export]
+// macro_rules! log_and_throw {
+//     ($message:expr) => {{
+//         log::error!("{}", $message);
+//         return Err(AppError {
+//             kind: "Application",
+//             message: $message,
+//         });
+//     }};
 
-    ($message:expr, $error:expr) => {{
-        let message = format!("{}: [{}]", $message, $error);
-        log::error!("{}", message);
-        return Err($error);
-    }};
-}
+//     ($message:expr, $error:expr) => {{
+//         let message = format!("{}: [{}]", $message, $error);
+//         log::error!("{}", message);
+//         return Err($error);
+//     }};
+// }
 
 #[macro_export]
 macro_rules! local_http {
