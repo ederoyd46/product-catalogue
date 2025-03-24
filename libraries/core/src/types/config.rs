@@ -37,13 +37,13 @@ impl ConfigBuilder {
 
         let aws_sdk_config = match self.endpoint_url {
             Some(url) => {
-                aws_config::defaults(BehaviorVersion::v2024_03_28())
+                aws_config::defaults(BehaviorVersion::v2025_01_17())
                     .endpoint_url(url)
                     .load()
                     .await
             }
 
-            None => aws_config::load_defaults(BehaviorVersion::v2024_03_28()).await,
+            None => aws_config::load_defaults(BehaviorVersion::v2025_01_17()).await,
         };
 
         Config {
